@@ -1,0 +1,190 @@
+================================================================================
+                    JUICE FLASHCARDS - START HERE
+================================================================================
+
+PROBLEM: "When I create a profile and select it I get msg about no cards"
+
+SOLUTION: You need to run a local server to load the cards
+
+================================================================================
+                         QUICK FIX (2 MINUTES)
+================================================================================
+
+STEP 1: Double-click run-server.bat
+  Location: D:\Custom_Web_app\run-server.bat
+  A Command Prompt window opens
+  You should see: "Serving HTTP on 0.0.0.0 port 8000"
+  Leave this window open!
+
+STEP 2: Open your web browser
+  Type in address bar: http://localhost:8000
+  Press Enter
+
+STEP 3: You see the app loaded!
+  Click the golden "Load Sample Cards" button
+  Popup shows: "✅ Loaded 108 cards!"
+
+STEP 4: Create your profile
+  Enter your name
+  Click Create
+
+STEP 5: Select your profile
+  Click your name
+  Cards now load!
+
+STEP 6: Study!
+  Type your answer
+  Tap card to flip
+  Rate with buttons
+
+================================================================================
+                        WHY THIS IS HAPPENING
+================================================================================
+
+Modern browsers block local files from loading other local files (CORS policy).
+
+The solution is to serve the files over HTTP instead of file://.
+
+That's what run-server.bat does - it starts a tiny web server on your computer.
+
+================================================================================
+                        PYTHON REQUIREMENT
+================================================================================
+
+run-server.bat needs Python installed.
+
+Check if you have Python:
+  1. Open Command Prompt (Windows key + R, type cmd)
+  2. Type: python --version
+  3. Press Enter
+
+If you see "Python 3.x.x":
+  ✓ You're good! Just double-click run-server.bat
+
+If you see "'python' is not recognized":
+  ✗ Install Python:
+    1. Go to: https://www.python.org/downloads/
+    2. Download Python
+    3. Run installer
+    4. IMPORTANT: Check "Add Python to PATH"
+    5. Click Install
+    6. Restart Command Prompt
+    7. Try run-server.bat again
+
+================================================================================
+                          TROUBLESHOOTING
+================================================================================
+
+"Command Prompt closes immediately"
+→ Error in the batch file
+→ Try: Open Command Prompt manually and type:
+    cd D:\Custom_Web_app
+    python -m http.server 8000
+
+"Page won't load after server starts"
+→ Wait 2 seconds, refresh browser (F5)
+→ Try different browser
+→ Check http://localhost:8000 is typed correctly
+
+"Still no 'Load Sample Cards' button"
+→ Make sure you're at http://localhost:8000
+→ Not file:///D:\Custom_Web_app\index.html
+→ Hard refresh: Ctrl+Shift+R
+
+"Cards still won't load after clicking button"
+→ Check browser console (F12)
+→ Look for error messages
+→ Try clearing cache: Ctrl+Shift+Delete
+
+================================================================================
+                          ALTERNATIVE METHODS
+================================================================================
+
+If run-server.bat doesn't work:
+
+METHOD 1: Manual Command Prompt
+  1. Open Command Prompt
+  2. Type: cd D:\Custom_Web_app
+  3. Type: python -m http.server 8000
+  4. Open browser to http://localhost:8000
+
+METHOD 2: PowerShell
+  1. Open PowerShell
+  2. Type: cd D:\Custom_Web_app
+  3. Type: .\run-server.ps1
+  4. Open browser to http://localhost:8000
+
+METHOD 3: VS Code
+  1. Open VS Code
+  2. Open folder: D:\Custom_Web_app
+  3. Right-click index.html
+  4. Select "Open with Live Server"
+  5. Browser opens automatically
+
+METHOD 4: Chrome Extension
+  1. Install "Web Server for Chrome" extension
+  2. Open extension
+  3. Choose folder: D:\Custom_Web_app
+  4. Click link (http://127.0.0.1:8000)
+  5. Browser opens with app
+
+================================================================================
+                          WHAT TO REMEMBER
+================================================================================
+
+1. Always run run-server.bat before opening the app
+2. Leave the Command Prompt window open while studying
+3. Access app at http://localhost:8000 (NOT file:///...)
+4. Click "Load Sample Cards" on first run
+5. After that, cards are cached - no need to reload
+
+================================================================================
+                       QUICK REFERENCE CHECKLIST
+================================================================================
+
+[ ] Python installed (python --version in Command Prompt works)
+[ ] run-server.bat double-clicked (Command Prompt window open)
+[ ] Browser opened to http://localhost:8000
+[ ] App displays "Juice Training" title
+[ ] "Load Sample Cards" button visible at bottom
+[ ] Clicked "Load Sample Cards"
+[ ] Popup shows "✅ Loaded 108 cards!"
+[ ] Created profile with your name
+[ ] Selected your profile
+[ ] Study card appears with question
+[ ] Can type answer
+[ ] Can tap card to flip
+[ ] Back card shows complete answer
+[ ] Can click rating buttons
+
+If all checkboxes checked: You're ready to study! 🎓
+
+================================================================================
+                         NEED MORE HELP?
+================================================================================
+
+Detailed instructions: Open SETUP_AND_RUN.md
+Card loading details: Open HOW_TO_LOAD_CARDS.md
+Full guide: Open QUICK_START.md
+
+If you still have issues:
+1. Check console errors (F12 in browser)
+2. Try different browser (Chrome, Firefox, Safari)
+3. Check all files are in D:\Custom_Web_app\
+4. Make sure Command Prompt window from run-server.bat is still open
+
+================================================================================
+                    LET'S GET THIS WORKING! 💪
+================================================================================
+
+You're just 3 steps away from studying:
+
+1. Double-click run-server.bat
+2. Open http://localhost:8000
+3. Click "Load Sample Cards"
+
+That's it! Then create a profile and start learning!
+
+Good luck! 🎓
+
+================================================================================

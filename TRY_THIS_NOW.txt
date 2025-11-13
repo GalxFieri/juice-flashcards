@@ -1,0 +1,65 @@
+================================================================================
+                           TRY THIS RIGHT NOW
+================================================================================
+
+The server was running from the WRONG FOLDER.
+
+I've FIXED the run-server.bat file.
+
+Try again:
+
+================================================================================
+                              3 SIMPLE STEPS
+================================================================================
+
+STEP 1: Close the Command Prompt window with the old server
+  - Press Ctrl+C or close the window
+  - Wait 5 seconds
+
+STEP 2: Double-click run-server.bat again
+  Location: D:\Custom_Web_app\run-server.bat
+
+  You'll see text like:
+    Current directory: D:\Custom_Web_app\
+    ✓ All files found!
+    Server is running from: D:\Custom_Web_app\
+
+STEP 3: Open http://localhost:8000 in your browser
+
+  You should now see:
+    - "Juice Training" title
+    - Profile selection screen
+    - "Load Sample Cards" button at bottom
+
+  NOT a directory listing of Windows files
+
+================================================================================
+                          IF IT STILL DOESN'T WORK
+================================================================================
+
+The Command Prompt will tell you what's wrong.
+
+Common messages:
+
+"ERROR: index.html not found"
+→ Make sure index.html is in D:\Custom_Web_app\
+→ Check the file isn't somewhere else
+
+"ERROR: juice_cloze_import_UPDATED.csv not found"
+→ Make sure the CSV is in D:\Custom_Web_app\
+→ Check the filename is exactly correct
+
+If the server starts but still shows directory listing:
+→ Close Command Prompt completely
+→ Wait 10 seconds
+→ Try again
+
+================================================================================
+                           THAT'S IT!
+================================================================================
+
+Really, just try these 3 steps. The fix should work now!
+
+Good luck! 🚀
+
+================================================================================

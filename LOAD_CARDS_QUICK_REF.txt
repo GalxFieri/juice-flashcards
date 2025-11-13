@@ -1,0 +1,128 @@
+================================================================================
+              JUICE FLASHCARDS - LOAD CARDS QUICK REFERENCE
+================================================================================
+
+THE PROBLEM YOU HAD:
+  "When I create a profile and select it I get a msg about no cards"
+
+THE SOLUTION:
+  Click the "Load Sample Cards" button on the profile selection screen
+
+================================================================================
+                              WHAT TO DO
+================================================================================
+
+1. OPEN index.html
+   - Double-click it or open in browser
+   - You see "Juice Training" title
+
+2. CLICK "Load Sample Cards"
+   - Golden button at the bottom of the profile screen
+   - Right below the "Create" profile section
+   - Button says "LOAD SAMPLE CARDS"
+
+3. POPUP APPEARS
+   - Shows "✅ Loaded 108 cards!"
+   - Click OK
+   - Cards are now ready
+
+4. CREATE A PROFILE
+   - Enter your name
+   - Click "Create"
+
+5. SELECT YOUR PROFILE
+   - Click your name in the list
+   - Cards will now load properly!
+
+6. START STUDYING
+   - Type your answer
+   - Tap card to flip
+   - Rate with buttons
+
+================================================================================
+                          WHY THIS HAPPENS
+================================================================================
+
+The app needs to:
+  1. Load the CSV file from disk
+  2. Parse it into card objects
+  3. Store it in browser memory
+  4. Make it available to the study session
+
+The "Load Sample Cards" button does all of this for you!
+
+================================================================================
+                            FILE CHECKLIST
+================================================================================
+
+Make sure all these files are in D:\Custom_Web_app\:
+
+✓ index.html                          (the app file)
+✓ juice_cloze_import_UPDATED.csv      (the card data - 108 cards)
+✓ answer-validation.js                (answer checking)
+✓ profile-system.js                   (profile management)
+✓ load-cards.js                       (helper script)
+
+All files must be in the SAME folder!
+
+================================================================================
+                          USING YOUR OWN CARDS
+================================================================================
+
+To use different cards:
+
+1. Create a CSV file with this format:
+
+   Text[TAB]Name[TAB]Category[TAB]Difficulty[TAB]Notes
+   mixing {{c1::strawberry}}, {{c2::kiwi}}[TAB]Name[TAB]Fruit[TAB]Beginner[TAB]Note
+
+2. Save as: juice_cloze_import_UPDATED.csv
+
+3. Place in same folder as index.html
+
+4. Click "Load Sample Cards" button
+
+5. Your cards load!
+
+NOTE: Use TAB character to separate columns, not spaces or commas!
+
+================================================================================
+                          ERROR MESSAGES
+================================================================================
+
+"Error: Could not load CSV file"
+→ CSV file is not in the app folder
+→ Solution: Put juice_cloze_import_UPDATED.csv in D:\Custom_Web_app\
+
+"Error: CSV file is empty or invalid format"
+→ CSV has no cloze format (missing {{c::}} syntax)
+→ Solution: Check CSV has proper cloze format and tab separation
+
+"Error loading CSV file"
+→ Technical issue with file parsing
+→ Solution: Check console (F12) for details, try different browser
+
+================================================================================
+                        QUICK KEYBOARD COMMANDS
+================================================================================
+
+None needed! Everything is click/tap based.
+
+In browser console (F12) you can type:
+  - localStorage.clear()     (clear all data)
+  - location.reload()        (reload page)
+
+================================================================================
+                            THAT'S IT!
+================================================================================
+
+Steps:
+  1. Open index.html
+  2. Click "Load Sample Cards"
+  3. Create profile
+  4. Select profile
+  5. Study!
+
+Questions? Check HOW_TO_LOAD_CARDS.md for detailed guide.
+
+================================================================================

@@ -1,0 +1,150 @@
+================================================================================
+                        WHAT WAS WRONG & HOW IT'S FIXED
+================================================================================
+
+THE PROBLEM YOU REPORTED:
+  "When running the .bat file for the server and going to the web address,
+   it just continues to load but never actually finishes or errors"
+
+THEN YOU FOUND:
+  Instead of seeing your flashcard app, you saw a directory listing of
+  Windows system files like DLL files, registry hives, etc.
+
+ROOT CAUSE:
+  The Python server was starting in the WRONG DIRECTORY.
+
+  Instead of:  D:\Custom_Web_app\
+  It was in:   C:\ (or some other system directory)
+
+WHY THIS HAPPENED:
+  The run-server.bat script didn't explicitly change to the app directory
+  before starting the HTTP server.
+
+  Python's HTTP server defaults to the CURRENT WORKING DIRECTORY.
+
+  If you double-clicked the .bat file from Windows Explorer, the current
+  directory might not have been set to D:\Custom_Web_app\.
+
+================================================================================
+                              WHAT'S FIXED
+================================================================================
+
+The updated run-server.bat now:
+
+1. DETECTS ITS LOCATION
+   - Uses %~dp0 to find where the batch file is located
+   - Automatically knows the correct directory
+
+2. VERIFIES FILES EXIST
+   - Checks for index.html
+   - Checks for juice_cloze_import_UPDATED.csv
+   - If files are missing, tells you exactly what's wrong
+   - Prevents cryptic errors
+
+3. CHANGES TO CORRECT DIRECTORY
+   - Explicitly changes to D:\Custom_Web_app\
+   - Uses "cd /d" to change drives if needed
+
+4. TELLS YOU WHAT IT'S DOING
+   - Shows "Current directory: D:\Custom_Web_app\"
+   - Shows "✓ All files found!"
+   - Shows "Server is running from: D:\Custom_Web_app\"
+   - So you know it's working correctly
+
+5. SERVES FROM CORRECT LOCATION
+   - Uses --directory flag to tell Python where to serve from
+   - Ensures HTTP server looks in D:\Custom_Web_app\
+   - Your app files are now found correctly
+
+================================================================================
+                          BEFORE VS AFTER
+================================================================================
+
+BEFORE (BROKEN):
+  ❌ Server starts in random directory (C:\, C:\Windows\System32, etc.)
+  ❌ Python tries to list files in that directory
+  ❌ You see system files (DLLs, registry files, etc.)
+  ❌ Your app files (index.html, etc.) are not found
+  ❌ Page never loads, hangs forever
+  ❌ No error message - very confusing!
+
+AFTER (FIXED):
+  ✅ Server explicitly changes to D:\Custom_Web_app\
+  ✅ Verifies index.html exists before starting
+  ✅ Verifies CSV file exists before starting
+  ✅ Tells you the directory it's using
+  ✅ Serves only files from D:\Custom_Web_app\
+  ✅ App loads instantly at http://localhost:8000
+  ✅ You see your flashcard app, not system files
+  ✅ If something's wrong, you get a clear error message
+
+================================================================================
+                        HOW TO TEST IT'S WORKING
+================================================================================
+
+1. Close the old Command Prompt window (the broken one)
+
+2. Double-click the updated run-server.bat
+
+3. Look for these lines in the Command Prompt:
+
+   Current directory: D:\Custom_Web_app\
+   ✓ All files found!
+   Server is running from: D:\Custom_Web_app\
+
+4. Open http://localhost:8000
+
+5. You should see:
+   - "Juice Training" as the title
+   - A profile selection screen
+   - A "Load Sample Cards" button
+
+   NOT a directory listing of Windows files
+
+6. Click "Load Sample Cards"
+   - Popup shows: "✅ Loaded 108 cards!"
+   - Success!
+
+================================================================================
+                        TECHNICAL EXPLANATION
+================================================================================
+
+Python's http.server module works like this:
+
+  python -m http.server 8000
+
+  This STARTS the server, but WHICH DIRECTORY does it serve?
+  Answer: Whatever the CURRENT WORKING DIRECTORY is.
+
+If you double-click a batch file, Windows doesn't always set the current
+directory to the batch file's location. It might be C:\ or C:\Windows\System32\.
+
+SOLUTION:
+  Before starting the server, explicitly change directory:
+
+    cd /d "D:\Custom_Web_app\"
+    python -m http.server 8000 --directory "D:\Custom_Web_app\"
+
+  Now:
+  - Current directory is D:\Custom_Web_app\
+  - HTTP server serves files from D:\Custom_Web_app\
+  - All files are found correctly
+
+The updated .bat file does exactly this!
+
+================================================================================
+                            YOU'RE ALL SET!
+================================================================================
+
+The fix is in place. Just try running it again:
+
+1. Close old Command Prompt
+2. Double-click run-server.bat
+3. Open http://localhost:8000
+4. You should see your app, not system files
+5. Click "Load Sample Cards"
+6. Create a profile and study!
+
+Good luck! 🎓
+
+================================================================================
