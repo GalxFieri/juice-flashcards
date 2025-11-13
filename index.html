@@ -660,6 +660,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
+                min-height: 100vh;
             }
 
             .flip-card-container {
@@ -667,38 +668,54 @@
                 height: auto;
                 max-height: none;
                 margin: 0;
-                aspect-ratio: 9 / 16;
-                min-height: 400px;
+                flex: 1 1 auto;
+                min-height: 350px;
+            }
+
+            .flip-card {
+                height: 100%;
             }
 
             .flip-card-front,
             .flip-card-back {
                 padding: 15px;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
+                height: 100%;
+            }
+
+            .flip-card-front {
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .flip-card-back {
+                overflow: hidden;
             }
 
             .card-label {
                 font-size: 11px;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
                 flex-shrink: 0;
             }
 
             .card-content {
-                gap: 12px;
+                gap: 10px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                flex: 1;
+                min-height: 0;
             }
 
             .cloze-text {
-                font-size: 16px;
+                font-size: 15px;
                 max-width: 100%;
-                line-height: 1.5;
+                line-height: 1.4;
                 word-break: break-word;
+                flex-shrink: 0;
             }
 
             .answer-input-wrapper {
@@ -725,21 +742,24 @@
             .comparison-section {
                 width: 100%;
                 max-width: 100%;
-                margin: 10px 0;
+                margin: 8px 0;
+                flex-shrink: 0;
             }
 
             .rating-buttons {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 8px;
-                width: 100%;
-                margin: 0;
-                padding: 10px;
+                gap: 6px;
+                width: calc(100% + 30px);
+                margin: 0 -15px -15px -15px;
+                padding: 10px 15px 15px 15px;
+                flex-shrink: 0;
             }
 
             .rating-btn {
-                min-height: 60px;
-                font-size: 10px;
+                min-height: 50px;
+                font-size: 9px;
+                padding: 8px;
             }
 
             .study-footer {
