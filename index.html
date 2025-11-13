@@ -370,6 +370,13 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
+        /* Prevent iOS auto-zoom on input focus */
+        @supports (-webkit-touch-callout: none) {
+            .answer-input {
+                font-size: 16px;
+            }
+        }
+
         .answer-input::placeholder {
             color: rgba(255, 255, 255, 0.5);
         }
@@ -647,38 +654,73 @@
                 font-size: 28px;
             }
 
+            .study-container {
+                padding: 10px;
+                min-height: 100vh;
+            }
+
             .flip-card-container {
-                max-height: 500px;
-                height: 70vh;
+                max-height: 450px;
+                height: 450px;
+                margin: 10px auto;
             }
 
             .flip-card-front,
             .flip-card-back {
-                padding: 20px;
+                padding: 15px;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .card-content {
+                gap: 15px;
             }
 
             .cloze-text {
                 font-size: 18px;
+                max-width: 90%;
+            }
+
+            .answer-input-wrapper {
+                gap: 10px;
+                margin-top: 10px;
             }
 
             .answer-input {
                 max-width: 280px;
                 font-size: 14px;
+                padding: 12px 16px;
+            }
+
+            .check-answer-btn {
+                max-width: 280px;
+                font-size: 14px;
+                padding: 12px 16px;
             }
 
             .rating-buttons {
-                max-width: 280px;
+                max-width: 100%;
+                gap: 8px;
+                margin-top: 10px;
+                width: 100%;
             }
 
             .rating-btn {
-                min-height: 65px;
+                min-height: 60px;
                 font-size: 10px;
+                flex: 1;
             }
 
             .study-footer {
                 flex-wrap: wrap;
-                padding: 15px;
+                padding: 10px;
                 gap: 8px;
+                font-size: 12px;
+            }
+
+            .comparison-section {
+                max-width: 90%;
+                margin: 10px auto;
             }
         }
 
