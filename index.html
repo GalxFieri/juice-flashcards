@@ -234,6 +234,8 @@
             text-align: center;
             padding: 30px;
             border-radius: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .flip-card-front {
@@ -272,6 +274,9 @@
             color: white;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             word-break: break-word;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            padding: 0 10px;
         }
 
         .cloze-blank {
@@ -960,17 +965,21 @@
                 }
 
                 const card = this.cards[this.currentCardIndex];
+
+                // Reset flip state FIRST, before rendering
                 this.flipCard.classList.remove('flipped');
+
+                // Clear input and comparison display
                 this.userAnswerInput.value = '';
-                this.userAnswerInput.focus();
+                this.comparisonSection.classList.remove('show');
 
                 // Render front card
                 this.renderClozeText(card.text, this.frontCloze, true);
                 // Render back card
                 this.renderClozeText(card.text, this.backCloze, false);
 
-                // Hide comparison initially
-                this.comparisonSection.classList.remove('show');
+                // Focus input for next answer
+                this.userAnswerInput.focus();
             }
 
             renderClozeText(text, element, isFront) {
@@ -1000,14 +1009,21 @@
             }
 
             toggleFlip() {
-                const isFlipped = this.flipCard.classList.toggle('flipped');
+                const userAnswer = this.userAnswerInput.value.trim();
 
-                if (isFlipped) {
-                    const userAnswer = this.userAnswerInput.value.trim();
-                    if (userAnswer) {
-                        this.validateAnswer(userAnswer);
-                    }
+                // Only allow flipping if there's an answer
+                if (!userAnswer) {
+                    return;
                 }
+
+                // First validate the answer
+                this.validateAnswer(userAnswer);
+
+                // Then trigger the flip animation
+                // Use a small delay to ensure DOM is ready for transition
+                setTimeout(() => {
+                    this.flipCard.classList.add('flipped');
+                }, 10);
             }
 
             validateAnswer(userAnswer) {
