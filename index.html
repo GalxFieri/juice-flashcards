@@ -350,6 +350,35 @@
             transform: scale(1.02);
         }
 
+        .check-answer-btn {
+            width: 100%;
+            max-width: 300px;
+            padding: 14px 18px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid rgba(255, 215, 0, 0.6);
+            border-radius: 12px;
+            background: rgba(255, 215, 0, 0.3);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .check-answer-btn:hover {
+            background: rgba(255, 215, 0, 0.5);
+            border-color: rgba(255, 215, 0, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 215, 0, 0.3);
+        }
+
+        .check-answer-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+        }
+
         .comparison-section {
             width: 100%;
             max-width: 400px;
@@ -672,7 +701,8 @@
                                         placeholder="Type your answer..."
                                         autocomplete="off"
                                         spellcheck="false">
-                                    <small style="color: rgba(255,255,255,0.6); font-size: 11px;">Tap to flip</small>
+                                    <button id="check-answer-btn" class="check-answer-btn">Check Answer</button>
+                                    <small style="color: rgba(255,255,255,0.6); font-size: 11px;">Or press Enter</small>
                                 </div>
                             </div>
                         </div>
@@ -795,9 +825,18 @@
                     loadCardsBtn.addEventListener('click', () => this.loadCardsFromFile());
                 }
 
-                this.flipCard.addEventListener('click', () => this.toggleFlip());
+                // Check Answer button listener
+                const checkAnswerBtn = document.getElementById('check-answer-btn');
+                if (checkAnswerBtn) {
+                    checkAnswerBtn.addEventListener('click', () => this.toggleFlip());
+                }
+
+                // Enter key in input field
                 this.userAnswerInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.toggleFlip();
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.toggleFlip();
+                    }
                 });
 
                 this.ratingButtons.forEach(btn => {
