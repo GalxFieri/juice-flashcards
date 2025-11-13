@@ -212,7 +212,7 @@
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transform-style: preserve-3d;
         }
 
@@ -471,6 +471,7 @@
         }
 
         .rating-btn {
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -501,6 +502,18 @@
         .rating-time {
             font-size: 9px;
             opacity: 0.7;
+        }
+
+        .rating-key {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            opacity: 0.8;
         }
 
         .rating-btn:active {
@@ -731,21 +744,25 @@
                                         <span class="rating-icon">🔄</span>
                                         <span>Again</span>
                                         <span class="rating-time">1m</span>
+                                        <span class="rating-key">1</span>
                                     </button>
                                     <button class="rating-btn hard" data-rating="hard">
                                         <span class="rating-icon">😅</span>
                                         <span>Hard</span>
                                         <span class="rating-time">10m</span>
+                                        <span class="rating-key">2</span>
                                     </button>
                                     <button class="rating-btn good" data-rating="good">
                                         <span class="rating-icon">👍</span>
                                         <span>Good</span>
                                         <span class="rating-time">3d</span>
+                                        <span class="rating-key">3</span>
                                     </button>
                                     <button class="rating-btn easy" data-rating="easy">
                                         <span class="rating-icon">⭐</span>
                                         <span>Easy</span>
                                         <span class="rating-time">4d</span>
+                                        <span class="rating-key">4</span>
                                     </button>
                                 </div>
                             </div>
@@ -844,6 +861,35 @@
                         const rating = e.currentTarget.getAttribute('data-rating');
                         this.submitRating(rating);
                     });
+                });
+
+                // Keyboard shortcuts for rating: 1=Again, 2=Hard, 3=Good, 4=Easy
+                document.addEventListener('keypress', (e) => {
+                    // Only handle if we're on the study screen and have rating buttons visible
+                    if (!this.studyScreen.classList.contains('active')) {
+                        return;
+                    }
+
+                    // Check if comparison section is visible (meaning we're on the back card)
+                    if (!this.comparisonSection.classList.contains('show')) {
+                        return;
+                    }
+
+                    let rating = null;
+                    if (e.key === '1') {
+                        rating = 'again';
+                    } else if (e.key === '2') {
+                        rating = 'hard';
+                    } else if (e.key === '3') {
+                        rating = 'good';
+                    } else if (e.key === '4') {
+                        rating = 'easy';
+                    }
+
+                    if (rating) {
+                        e.preventDefault();
+                        this.submitRating(rating);
+                    }
                 });
 
                 this.backToProfileBtn.addEventListener('click', () => this.endSession());
@@ -1059,10 +1105,13 @@
                 this.validateAnswer(userAnswer);
 
                 // Then trigger the flip animation
-                // Use a small delay to ensure DOM is ready for transition
+                // Force a reflow to ensure browser registers the DOM change
+                // before applying the CSS transition
                 setTimeout(() => {
+                    // Access offsetHeight to force a reflow
+                    void this.flipCard.offsetHeight;
                     this.flipCard.classList.add('flipped');
-                }, 10);
+                }, 50);
             }
 
             validateAnswer(userAnswer) {
