@@ -644,8 +644,12 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Mobile Responsive - Dynamic viewport handling */
+        /* Mobile Responsive - CSS-only viewport adaptation */
         @media (max-width: 640px) {
+            #study-screen {
+                background: #000;
+            }
+
             #profile-screen {
                 padding: 15px;
             }
@@ -655,105 +659,99 @@
             }
 
             .study-container {
-                padding: 10px;
+                padding: 0;
                 width: 100%;
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
-                min-height: 100vh;
+                height: 100dvh;
+                background: #000;
+                overflow: hidden;
             }
 
             .flip-card-container {
                 width: 100%;
-                height: auto;
-                max-height: none;
+                flex: 1;
                 margin: 0;
-                flex: 1 1 auto;
-                min-height: 350px;
+                min-height: 0;
+                display: flex;
             }
 
             .flip-card {
+                width: 100%;
                 height: 100%;
+                display: flex;
             }
 
             .flip-card-front,
             .flip-card-back {
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start;
+                width: 100%;
                 height: 100%;
-            }
-
-            .flip-card-front {
-                padding: 5px 15px 15px 15px;
-                overflow-y: auto;
+                overflow-y: scroll;
                 -webkit-overflow-scrolling: touch;
-            }
-
-            .flip-card-back {
-                padding: 5px 15px 15px 15px;
-                overflow: hidden;
+                padding: 10px 15px;
             }
 
             .card-label {
                 font-size: 11px;
-                margin-bottom: 8px;
+                margin-bottom: 6px;
                 flex-shrink: 0;
             }
 
             .card-content {
-                gap: 5px;
-                flex: 1;
+                gap: 3px;
+                flex-shrink: 0;
                 display: flex;
                 flex-direction: column;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                min-height: 0;
             }
 
             .cloze-text {
                 font-size: 15px;
                 max-width: 100%;
-                line-height: 1.4;
+                line-height: 1.3;
                 word-break: break-word;
-                flex-shrink: 0;
             }
 
             .answer-input-wrapper {
-                gap: 6px;
+                gap: 5px;
                 width: 100%;
                 margin-top: 8px;
                 padding: 0;
+                flex-shrink: 0;
             }
 
             .answer-input {
                 width: 100%;
                 max-width: 100%;
                 font-size: 16px;
-                padding: 12px;
+                padding: 10px;
             }
 
             .check-answer-btn {
                 width: 100%;
                 max-width: 100%;
-                font-size: 14px;
-                padding: 12px;
+                font-size: 13px;
+                padding: 10px;
             }
 
             .comparison-section {
                 width: 100%;
                 max-width: 100%;
-                margin: 8px 0;
+                margin: 6px 0;
                 flex-shrink: 0;
+            }
+
+            .comparison-box {
+                gap: 8px;
             }
 
             .rating-buttons {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 6px;
-                width: calc(100% + 30px);
-                margin: 0 -15px -15px -15px;
-                padding: 10px 15px 15px 15px;
+                margin: 6px -15px 0 -15px;
+                padding: 8px 15px 15px 15px;
                 flex-shrink: 0;
             }
 
@@ -765,9 +763,12 @@
 
             .study-footer {
                 width: 100%;
-                padding: 10px;
+                padding: 8px 10px;
                 gap: 5px;
                 font-size: 11px;
+                flex-shrink: 0;
+                background: #000;
+                border-top: 1px solid rgba(255,255,255,0.1);
             }
         }
 
@@ -933,7 +934,6 @@
                 this.createProfileBtn = document.getElementById('create-profile-btn');
 
                 // Study screen
-                this.flipCardContainer = document.querySelector('.flip-card-container');
                 this.flipCard = document.getElementById('flip-card');
                 this.frontCloze = document.getElementById('front-cloze');
                 this.backCloze = document.getElementById('back-cloze');
@@ -1013,41 +1013,6 @@
                 });
 
                 this.backToProfileBtn.addEventListener('click', () => this.endSession());
-
-                // Handle viewport changes (keyboard open/close) on mobile
-                if (window.visualViewport) {
-                    window.visualViewport.addEventListener('resize', () => this.handleViewportChange());
-                    window.visualViewport.addEventListener('scroll', () => this.handleViewportChange());
-                }
-
-                // Fallback for devices without visualViewport API
-                window.addEventListener('resize', () => this.handleViewportChange());
-                this.userAnswerInput.addEventListener('focus', () => this.handleViewportChange());
-                this.userAnswerInput.addEventListener('blur', () => this.handleViewportChange());
-            }
-
-            handleViewportChange() {
-                if (!this.flipCard) return;
-
-                // Get available viewport height
-                const viewportHeight = window.visualViewport ?
-                    window.visualViewport.height :
-                    window.innerHeight;
-
-                // Get the flip card container
-                const cardContainer = this.flipCardContainer;
-                if (!cardContainer) return;
-
-                // Adjust card height based on available viewport
-                // Reserve space for footer (80px) and padding (20px)
-                const availableHeight = viewportHeight - 100;
-
-                // Set minimum and maximum reasonable heights
-                const cardHeight = Math.max(300, Math.min(availableHeight, 550));
-
-                cardContainer.style.minHeight = cardHeight + 'px';
-                cardContainer.style.maxHeight = cardHeight + 'px';
-                cardContainer.style.height = cardHeight + 'px';
             }
 
             loadData() {
@@ -1196,8 +1161,6 @@
                 this.profileScreen.classList.remove('active');
                 this.studyScreen.classList.add('active');
                 this.updateFooter();
-                // Adjust card size based on current viewport
-                setTimeout(() => this.handleViewportChange(), 100);
             }
 
             displayCard() {
