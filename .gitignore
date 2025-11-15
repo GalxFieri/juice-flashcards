@@ -1,0 +1,28 @@
+# IDE and Editor files
+.vscode/
+.cursor/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code / MCP local settings
+.claude/
+.mcp.json
+.mcps/
+.superdesign/
+.windsurfrules
+CLAUDE.md
+
+# OS files
+.DS_Store
+Thumbs.db
+*.log
+
+# Node modules (if any)
+node_modules/
+package-lock.json
+
+# Local environment files
+.env
+.env.local
