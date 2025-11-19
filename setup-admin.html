@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Master Admin - Juice Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .setup-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #764ba2;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        #status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        #status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .credentials {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <h1>🔐 Setup Master Admin</h1>
+        <p>Create the master admin account to manage your Juice Flashcards application.</p>
+        <button id="createAdminBtn" onclick="createMasterAdmin()">Create Master Admin</button>
+        <div id="status"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <script src="firebase-auth.js"></script>
+
+    <script>
+        async function createMasterAdmin() {
+            const btn = document.getElementById('createAdminBtn');
+            const statusDiv = document.getElementById('status');
+
+            btn.disabled = true;
+            statusDiv.className = '';
+            statusDiv.textContent = 'Creating master admin account...';
+            statusDiv.style.display = 'block';
+
+            try {
+                // Initialize Firebase
+                await window.JuiceAuth.initializeFirebase();
+
+                // Create the master admin account
+                const db = firebase.firestore();
+                const adminRef = db.collection('users').doc('admin');
+
+                await adminRef.set({
+                    username: 'admin',
+                    pin: '0000',
+                    isAdmin: true,
+                    createdAt: new Date().toISOString(),
+                    isActive: true
+                });
+
+                statusDiv.className = 'success';
+                statusDiv.innerHTML = `
+                    <strong>✅ Master Admin Account Created!</strong>
+                    <div class="credentials">
+                        <p><strong>Username:</strong> admin</p>
+                        <p><strong>PIN:</strong> 0000</p>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 14px;">
+                        You can now <a href="index.html" style="color: #155724; text-decoration: underline;">login to the app</a> with these credentials and create additional admin accounts.
+                    </p>
+                `;
+            } catch (error) {
+                console.error('Error creating admin:', error);
+                statusDiv.className = 'error';
+                statusDiv.textContent = `❌ Error: ${error.message}`;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
