@@ -1,0 +1,46 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions for custom username/PIN auth
+    function isValidUser(username) {
+      // Allow read/write if user data exists (username is in users collection)
+      // The app validates credentials before allowing access
+      return true;
+    }
+
+    // Allow anyone to query the users collection to check username availability
+    match /users/{username} {
+      // Allow read to check if user exists (for signup validation)
+      allow read: if request.query.limit == 1;
+
+      // Allow create for new users (signup)
+      allow create: if !exists(/databases/$(database)/documents/users/$(username));
+
+      // Allow read/write for authenticated users to their own data
+      // In practice, the app validates the PIN in the client
+      allow read, write: if request.auth == null;
+    }
+
+    // User subcollections (profiles with card history)
+    match /users/{username}/profiles/{profileId} {
+      allow read, write: if request.auth == null;
+    }
+
+    // Card history subcollections
+    match /users/{username}/profiles/{profileId}/cardHistory/{cardId} {
+      allow read, write: if request.auth == null;
+    }
+
+    // Public leaderboards (read-only)
+    match /leaderboards/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

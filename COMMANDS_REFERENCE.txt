@@ -1,0 +1,156 @@
+================================================================================
+FIREBASE MIGRATION - COMMAND QUICK REFERENCE
+================================================================================
+
+STEP 1: Install Firebase CLI
+------
+npm install -g firebase-tools
+
+Verify:
+firebase --version
+
+Should show: 12.0.0 (or similar version number)
+
+================================================================================
+
+STEP 2: Login to Firebase
+------
+firebase login
+
+Browser will open - log in with Google account
+
+================================================================================
+
+STEP 3: Create Project in Firebase Console
+------
+Go to: https://console.firebase.google.com
+
+1. Click "Add Project"
+2. Name: juice-flashcards-app
+3. Uncheck Google Analytics
+4. Create project
+
+Wait 1-2 minutes for project to be ready.
+
+================================================================================
+
+STEP 4: Enable Services in Firebase Console
+------
+In left sidebar under "Build":
+
+A. Authentication
+   - Click "Get Started"
+   - Select "Email/Password"
+   - Toggle ON (blue)
+   - Click Save
+
+B. Firestore Database
+   - Click "Create Database"
+   - Choose "Production mode"
+   - Location: us-central1
+   - Click Create (wait 1-2 minutes)
+
+C. Hosting
+   - Click "Get Started"
+   - Follow through wizard
+
+See FIREBASE_CONSOLE_SETUP.md for visual guide!
+
+================================================================================
+
+STEP 5: Initialize Firebase in Your Project
+------
+cd D:\Custom_Web_app
+firebase init
+
+Answers:
+  Which features? → Firestore, Hosting (spacebar to select)
+  Use existing project? → y
+  Select project → juice-flashcards-app
+  Firestore rules file → [ENTER]
+  Firestore indexes → [ENTER]
+  Public directory → . (just a dot)
+  Single-page app? → y
+  Automatic builds? → n
+  Overwrite index.html? → n (IMPORTANT!)
+
+================================================================================
+
+STEP 6: Update Config Files
+------
+Edit firestore.rules:
+  Copy security rules from FIREBASE_QUICK_START.md
+
+Edit firebase.json:
+  Copy hosting config from FIREBASE_QUICK_START.md
+
+================================================================================
+
+STEP 7: Deploy to Firebase
+------
+firebase deploy
+
+You should see:
+  ✔ Deploy complete!
+  Hosting URL: https://juice-flashcards-app.web.app
+
+Save this URL!
+
+================================================================================
+
+STEP 8: Test Your App
+------
+Open in browser: https://juice-flashcards-app.web.app
+
+App should load and work like before.
+
+================================================================================
+
+HELPFUL COMMANDS
+==============================
+firebase status              - Check login and project status
+firebase projects:list       - List your Firebase projects
+firebase deploy --only hosting - Deploy only hosting
+firebase serve              - Run locally before deploying
+firebase logout             - Sign out
+
+================================================================================
+
+TROUBLESHOOTING
+==============================
+"firebase: command not found"
+  → npm install -g firebase-tools
+
+"Error: Could not load config"
+  → Make sure you're in D:\Custom_Web_app
+  → Run: cd D:\Custom_Web_app
+
+"Permission denied"
+  → Run: firebase login
+
+"Hosting URL not showing"
+  → Run: firebase deploy --only hosting
+
+Cannot find services in Console
+  → Refresh page (F5)
+  → Check project name at top
+
+================================================================================
+
+IMPORTANT NOTES
+==============================
+- Do NOT overwrite index.html during firebase init
+- Choose "Production mode" for Firestore (not test mode)
+- Your project name is: juice-flashcards-app
+- Save your Hosting URL: https://juice-flashcards-app.web.app
+- After deploy, update GitHub repository if using Git
+
+================================================================================
+
+NEED HELP?
+Read the guides:
+  - FIREBASE_QUICK_START.md (simple checklist)
+  - FIREBASE_SETUP_GUIDE.md (detailed steps)
+  - FIREBASE_CONSOLE_SETUP.md (visual guide for console)
+
+================================================================================

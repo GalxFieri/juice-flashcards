@@ -1,0 +1,45 @@
+{
+  "firestore": {
+    "database": "(default)",
+    "location": "us-east5",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "*.md",
+      "*.ps1",
+      "*.bat",
+      ".git/**",
+      ".claude/**",
+      ".cursor/**",
+      ".vscode/**",
+      ".superdesign/**",
+      "FIREBASE_*.md",
+      "PROJECT_SUMMARY.md",
+      "README.md",
+      "QUICK_START.md",
+      "TECHNICAL_OVERVIEW.md",
+      "TESTING_CHECKLIST.md",
+      "HOW_TO_LOAD_CARDS.md",
+      "SETUP_AND_RUN.md",
+      "FIXED_SERVER_ISSUE.md",
+      "START_HERE.txt",
+      "TRY_THIS_NOW.txt",
+      "WHAT_WAS_WRONG.txt",
+      "LOAD_CARDS_QUICK_REF.txt",
+      "COMMANDS_REFERENCE.txt"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "cleanUrls": true
+  }
+}
