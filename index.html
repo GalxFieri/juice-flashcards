@@ -2292,6 +2292,17 @@
                 return cards;
             }
 
+            // ====== HELPER METHODS ======
+            hideAllScreens() {
+                document.getElementById('login-screen').classList.remove('active');
+                document.getElementById('signup-screen').classList.remove('active');
+                document.getElementById('profile-screen').classList.remove('active');
+                document.getElementById('study-screen').classList.remove('active');
+                document.getElementById('analytics-screen').classList.remove('active');
+                document.getElementById('settings-screen').classList.remove('active');
+                document.getElementById('admin-screen').classList.remove('active');
+            }
+
             // ====== AUTHENTICATION METHODS ======
 
             showLoginScreen() {
@@ -2910,10 +2921,10 @@
                     const topStruggledCards = this.getTopStruggledCards(cardHistories);
 
                     // Update stats display
-                    document.getElementById('accuracy-stat').textContent = accuracy.toFixed(1) + '%';
-                    document.getElementById('streak-stat').textContent = streak + ' days';
-                    document.getElementById('cards-stat').textContent = totalCards;
-                    document.getElementById('time-stat').textContent = this.formatMinutes(studyTime);
+                    document.getElementById('accuracy-display').textContent = accuracy.toFixed(1) + '%';
+                    document.getElementById('streak-display').textContent = streak + ' days';
+                    document.getElementById('cards-studied-display').textContent = totalCards;
+                    document.getElementById('study-time-display').textContent = this.formatMinutes(studyTime);
 
                     // Populate struggled cards list
                     this.renderStruggledCards(topStruggledCards);
@@ -3071,7 +3082,7 @@
             }
 
             createAccuracyChart() {
-                const ctx = document.getElementById('accuracy-chart');
+                const ctx = document.getElementById('accuracy-trend-chart');
                 if (!ctx) return;
 
                 if (this.accuracyChart) {
@@ -3133,9 +3144,9 @@
                 if (!session) return;
 
                 // Populate account info
-                document.getElementById('account-username').textContent = session.username;
-                document.getElementById('account-level').textContent = this.currentProfile.currentLevel;
-                document.getElementById('account-xp').textContent = this.currentProfile.xp;
+                document.getElementById('settings-username').textContent = session.username;
+                document.getElementById('settings-level').textContent = this.currentProfile.currentLevel;
+                document.getElementById('settings-xp').textContent = this.currentProfile.xp;
 
                 // Show admin button if user is admin
                 const isAdmin = await window.JuiceAuth.isUserAdmin(session.username);
