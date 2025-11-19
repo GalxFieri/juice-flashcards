@@ -82,12 +82,25 @@
         <div id="status"></div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-    <script src="firebase-auth.js"></script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-    <script>
-        async function createMasterAdmin() {
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBS3_8ma3W95wmPahH0isUtyMklmpr7vwc",
+            authDomain: "juice-flashcards-app.firebaseapp.com",
+            projectId: "juice-flashcards-app",
+            storageBucket: "juice-flashcards-app.firebasestorage.app",
+            messagingSenderId: "532667186294",
+            appId: "1:532667186294:web:a1614ae1df80407952b357"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.createMasterAdmin = async function() {
             const btn = document.getElementById('createAdminBtn');
             const statusDiv = document.getElementById('status');
 
@@ -97,14 +110,10 @@
             statusDiv.style.display = 'block';
 
             try {
-                // Initialize Firebase
-                await window.JuiceAuth.initializeFirebase();
+                // Create the master admin account in Firestore
+                const adminRef = doc(db, 'users', 'admin');
 
-                // Create the master admin account
-                const db = firebase.firestore();
-                const adminRef = db.collection('users').doc('admin');
-
-                await adminRef.set({
+                await setDoc(adminRef, {
                     username: 'admin',
                     pin: '0000',
                     isAdmin: true,
