@@ -2598,8 +2598,8 @@
             }
 
             showProfileScreen() {
+                this.hideAllScreens();
                 this.profileScreen.classList.add('active');
-                this.studyScreen.classList.remove('active');
                 this.renderProfileList();
                 this.profileNameInput.value = '';
                 setTimeout(() => this.profileNameInput.focus(), 300);
@@ -2666,7 +2666,7 @@
             }
 
             showStudyScreen() {
-                this.profileScreen.classList.remove('active');
+                this.hideAllScreens();
                 this.studyScreen.classList.add('active');
                 this.updateFooter();
             }
