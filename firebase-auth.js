@@ -16,6 +16,14 @@ const firebaseConfig = {
 
 let db = null;
 let currentSession = null;
+let doc = null;
+let getDoc = null;
+let setDoc = null;
+let updateDoc = null;
+let deleteDoc = null;
+let collection = null;
+let getDocs = null;
+let query = null;
 
 /**
  * Initialize Firebase
@@ -24,7 +32,17 @@ async function initializeFirebase() {
     try {
         // Import Firebase modules
         const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-        const { getFirestore, enableIndexedDbPersistence } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+        const { getFirestore, enableIndexedDbPersistence, doc: docFunc, getDoc: getDocFunc, setDoc: setDocFunc, updateDoc: updateDocFunc, deleteDoc: deleteDocFunc, collection: collectionFunc, getDocs: getDocsFunc, query: queryFunc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+
+        // Assign imported functions to global scope within this module
+        doc = docFunc;
+        getDoc = getDocFunc;
+        setDoc = setDocFunc;
+        updateDoc = updateDocFunc;
+        deleteDoc = deleteDocFunc;
+        collection = collectionFunc;
+        getDocs = getDocsFunc;
+        query = queryFunc;
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
