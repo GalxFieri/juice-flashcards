@@ -3156,6 +3156,7 @@
                 // Show admin button if user is admin
                 try {
                     const isAdmin = await window.JuiceAuth.isUserAdmin(session.username);
+                    console.log('Is admin user:', session.username, '=', isAdmin);
                     const adminAccessSection = document.getElementById('admin-access-section');
                     if (adminAccessSection) {
                         adminAccessSection.style.display = isAdmin ? 'block' : 'none';
