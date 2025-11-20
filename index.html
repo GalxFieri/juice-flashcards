@@ -2311,10 +2311,8 @@
             // ====== AUTHENTICATION METHODS ======
 
             showLoginScreen() {
+                this.hideAllScreens();
                 document.getElementById('login-screen').classList.add('active');
-                document.getElementById('signup-screen').classList.remove('active');
-                document.getElementById('profile-screen').classList.remove('active');
-                document.getElementById('study-screen').classList.remove('active');
                 document.getElementById('login-error').classList.remove('show');
                 document.getElementById('login-username').value = '';
                 document.getElementById('login-pin').value = '';
@@ -2322,10 +2320,8 @@
             }
 
             showSignupScreen() {
+                this.hideAllScreens();
                 document.getElementById('signup-screen').classList.add('active');
-                document.getElementById('login-screen').classList.remove('active');
-                document.getElementById('profile-screen').classList.remove('active');
-                document.getElementById('study-screen').classList.remove('active');
                 document.getElementById('signup-error').classList.remove('show');
                 document.getElementById('signup-username').value = '';
                 document.getElementById('signup-pin').value = '';
