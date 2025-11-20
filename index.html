@@ -3141,7 +3141,7 @@
             async showSettingsScreen() {
                 this.hideAllScreens();
                 this.settingsScreen.classList.add('active');
-                this.loadSettingsData();
+                await this.loadSettingsData();
             }
 
             async loadSettingsData() {
@@ -3154,10 +3154,14 @@
                 document.getElementById('settings-xp').textContent = this.currentProfile.xp;
 
                 // Show admin button if user is admin
-                const isAdmin = await window.JuiceAuth.isUserAdmin(session.username);
-                const adminAccessSection = document.getElementById('admin-access-section');
-                if (adminAccessSection) {
-                    adminAccessSection.style.display = isAdmin ? 'block' : 'none';
+                try {
+                    const isAdmin = await window.JuiceAuth.isUserAdmin(session.username);
+                    const adminAccessSection = document.getElementById('admin-access-section');
+                    if (adminAccessSection) {
+                        adminAccessSection.style.display = isAdmin ? 'block' : 'none';
+                    }
+                } catch (error) {
+                    console.error('Error checking admin status:', error);
                 }
             }
 
