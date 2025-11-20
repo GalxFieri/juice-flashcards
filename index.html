@@ -2667,15 +2667,11 @@
 
             loadCardsFromCSV() {
                 try {
-                    const stored = localStorage.getItem('juice_cards');
-                    if (stored) {
-                        this.cards = JSON.parse(stored);
-                        console.log('Cards loaded from localStorage. Total:', this.cards.length);
-                    } else {
-                        // No cards in localStorage - will load from card sets via dropdown
-                        this.cards = [];
-                        console.log('No cards in localStorage. Use the category dropdown to select a card set.');
-                    }
+                    // DO NOT auto-load cards from localStorage
+                    // Users must select a category from the dropdown
+                    // This prevents test cards from auto-appearing
+                    this.cards = [];
+                    console.log('Cards will be loaded from category dropdown. Use "Select Study Material" to choose cards.');
                 } catch (e) {
                     console.error('Error loading cards:', e);
                     this.cards = [];
