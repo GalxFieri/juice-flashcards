@@ -2321,6 +2321,12 @@
                     console.warn('Firebase initialization failed, continuing with offline mode');
                 }
 
+                // Hide category selection modal on startup
+                const categoryModal = document.getElementById('category-selection-modal');
+                if (categoryModal) {
+                    categoryModal.style.display = 'none';
+                }
+
                 // Check if user is logged in
                 const session = window.JuiceAuth.getCurrentSession();
                 if (session) {
@@ -3167,10 +3173,24 @@
                 const modal = document.getElementById('category-selection-modal');
                 const dropdown = document.getElementById('category-selection-dropdown');
 
-                // Load available card sets
-                try {
-                    const cardSets = await window.JuiceAuth.getCardSets();
+                // Show the modal immediately so user doesn't see blank screen
+                modal.style.display = 'flex';
 
+                // Load available card sets with timeout
+                try {
+                    console.log('Attempting to load card sets from Firestore...');
+
+                    // Create a timeout promise
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Timeout loading card sets')), 5000)
+                    );
+
+                    const cardSets = await Promise.race([
+                        window.JuiceAuth.getCardSets(),
+                        timeoutPromise
+                    ]);
+
+                    console.log(`Loaded ${cardSets.length} card sets`);
                     dropdown.innerHTML = '<option value="">-- Select a Category --</option>';
 
                     if (cardSets.length === 0) {
@@ -3185,11 +3205,8 @@
                     }
                 } catch (error) {
                     console.error('Error loading card sets for modal:', error);
-                    dropdown.innerHTML = '<option disabled>Error loading categories</option>';
+                    dropdown.innerHTML = '<option disabled>Error loading categories: ' + error.message + '</option>';
                 }
-
-                // Show the modal
-                modal.style.display = 'flex';
             }
 
             hideCategorySelectionModal() {
