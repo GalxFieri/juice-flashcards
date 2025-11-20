@@ -3264,7 +3264,7 @@
             }
 
             renderUsersList(users) {
-                const tbody = document.querySelector('#users-table tbody');
+                const tbody = document.getElementById('users-table-body');
                 if (!tbody) return;
 
                 tbody.innerHTML = '';
@@ -3273,8 +3273,10 @@
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${user.username}</td>
-                        <td>${user.isAdmin ? 'Yes' : 'No'}</td>
-                        <td>${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</td>
+                        <td>${user.level || 'N/A'}</td>
+                        <td>${user.xp || 0}</td>
+                        <td>${user.accuracy ? user.accuracy.toFixed(1) + '%' : 'N/A'}</td>
+                        <td>${user.lastActive ? new Date(user.lastActive).toLocaleDateString() : 'N/A'}</td>
                         <td>
                             <button class="admin-action-btn reset-pin-btn" data-username="${user.username}">Reset PIN</button>
                             <button class="admin-action-btn delete-user-btn" data-username="${user.username}">Delete</button>

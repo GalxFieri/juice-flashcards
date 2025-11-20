@@ -539,15 +539,48 @@ async function getAllUsers() {
         const querySnapshot = await getDocs(usersRef);
         const users = [];
 
-        querySnapshot.forEach(doc => {
-            const data = doc.data();
+        for (const userDoc of querySnapshot.docs) {
+            const userData = userDoc.data();
+            let level = 'N/A';
+            let xp = 0;
+            let accuracy = 'N/A';
+            let lastActive = 'N/A';
+
+            // Try to load user's first profile for stats
+            try {
+                const profilesRef = collection(userDoc.ref, 'profiles');
+                const profilesSnap = await getDocs(profilesRef);
+
+                if (profilesSnap.docs.length > 0) {
+                    const profileData = profilesSnap.docs[0].data();
+                    level = profileData.currentLevel || 1;
+                    xp = profileData.xp || 0;
+
+                    // Calculate accuracy from profile
+                    const total = profileData.totalCards || 0;
+                    const correct = profileData.correctCards || 0;
+                    if (total > 0) {
+                        accuracy = (correct / total) * 100;
+                    }
+
+                    lastActive = profileData.lastStudy || userData.createdAt || new Date().toISOString();
+                }
+            } catch (err) {
+                // If profiles don't exist, just use defaults
+                console.warn('Could not load profile for user:', userDoc.id);
+            }
+
             users.push({
-                username: doc.id,
-                isAdmin: data.isAdmin || false,
-                createdAt: data.createdAt || new Date().toISOString(),
+                username: userDoc.id,
+                isAdmin: userData.isAdmin || false,
+                createdAt: userData.createdAt || new Date().toISOString(),
+                lastActive: lastActive,
+                level: level,
+                xp: xp,
+                accuracy: typeof accuracy === 'number' ? accuracy : null,
                 pin: '****' // Never expose PIN
             });
-        });
+        }
 
         return users;
     } catch (error) {
