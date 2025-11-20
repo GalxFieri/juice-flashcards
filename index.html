@@ -2568,8 +2568,8 @@
                     categoryLogoutBtn.addEventListener('click', () => this.handleLogout());
                 }
 
-                // Load available card sets on initialization
-                this.loadAvailableCardSets();
+                // Don't load card sets on init - they're loaded in the modal after login
+                // this.loadAvailableCardSets();
 
                 // Category management listeners
                 const createCategoryBtn = document.getElementById('create-category-btn');
