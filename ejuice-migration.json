@@ -1,0 +1,614 @@
+{
+  "setId": "ejuice",
+  "setData": {
+    "name": "eJuice",
+    "category": "eJuice",
+    "description": "Flashcards for eJuice/Disposable Vape products",
+    "cards": [
+      {
+        "id": "raz_1",
+        "question": "Raz - Ruby: A tasty mix of {{c1::cherry}}, {{c2::strawberry}}, and {{c3::raspberry}} flavors in a dream edition blend.",
+        "answer": "Raz - Ruby",
+        "category": "Berry",
+        "tags": "Cherry,strawberry,raspberry",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_2",
+        "question": "Raz - Tiffany: A refreshing blend of {{c1::kiwi}} and {{c2::watermelon}} for a light {{c3::summer}} vape.",
+        "answer": "Raz - Tiffany",
+        "category": "Fruit",
+        "tags": "Kiwi and watermelon summer",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_3",
+        "question": "Raz - Violet: Sweet {{c1::grape}} and {{c2::strawberry}} flavors come together in harmonious fashion.",
+        "answer": "Raz - Violet",
+        "category": "Berry",
+        "tags": "Grape and strawberry",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_4",
+        "question": "Raz - Vicky: {{c1::Pink lemonade}} that tastes like {{c2::summer}} refreshment.",
+        "answer": "Raz - Vicky",
+        "category": "Citrus",
+        "tags": "Pink lemonade summer flavor",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_5",
+        "question": "Raz - Banana Coconut: Creamy {{c1::banana}} paired with smooth {{c2::coconut}} {{c3::tropical}} sweetness.",
+        "answer": "Raz - Banana Coconut",
+        "category": "Tropical",
+        "tags": "Banana and coconut tropical",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_6",
+        "question": "Raz - Black Cherry Peach: Sweet {{c1::black cherry}} mixed with {{c2::juicy}} {{c3::peach}} for garden-fresh taste.",
+        "answer": "Raz - Black Cherry Peach",
+        "category": "Berry",
+        "tags": "Black cherry and peach",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_7",
+        "question": "Raz - Black Cherry Kiwi: {{c1::Bold}} {{c2::black cherry}} with {{c3::tangy}} {{c4::kiwi}} zest creating vibrant flavor.",
+        "answer": "Raz - Black Cherry Kiwi",
+        "category": "Berry",
+        "tags": "Black cherry and kiwi",
+        "difficulty": "Advanced"
+      },
+      {
+        "id": "raz_8",
+        "question": "Raz - Blue Raz Ice: {{c1::Blue raspberry}} with {{c2::icy}} finish for {{c3::cool}} refreshment.",
+        "answer": "Raz - Blue Raz Ice",
+        "category": "Berry",
+        "tags": "Blue raspberry with ice",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_9",
+        "question": "Raz - Blue Raz Cotton Candy: {{c1::Sweet}} {{c2::blue raspberry}} meets {{c3::fluffy}} {{c4::cotton candy}} nostalgia.",
+        "answer": "Raz - Blue Raz Cotton Candy",
+        "category": "Carnival",
+        "tags": "Blue raspberry and cotton candy",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_10",
+        "question": "Raz - Blue Raz Gush: Explosive {{c1::blue raspberry}} {{c2::candy}} flavor bursting with sweetness.",
+        "answer": "Raz - Blue Raz Gush",
+        "category": "Carnival",
+        "tags": "Blue raspberry candy gush",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_11",
+        "question": "Raz - Blueberry Watermelon: {{c1::Juicy}} {{c2::blueberry}} and {{c3::watermelon}} combination for refreshing experience.",
+        "answer": "Raz - Blueberry Watermelon",
+        "category": "Berry",
+        "tags": "Blueberry and watermelon",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_12",
+        "question": "Raz - Bangin Sour Berries: {{c1::Sour}} {{c2::berry}} medley featuring multiple berry flavors for tang lovers.",
+        "answer": "Raz - Bangin Sour Berries",
+        "category": "Berry",
+        "tags": "Sour berry medley",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_13",
+        "question": "Raz - Cactus Jack: {{c1::Subtly}} {{c2::sweet}} and {{c3::refreshing}} {{c4::cactus}} profile for adventurous vapers.",
+        "answer": "Raz - Cactus Jack",
+        "category": "Fruit",
+        "tags": "Sweet and refreshing cactus",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_14",
+        "question": "Raz - Cherry Lemon: {{c1::Zesty}} combination of {{c2::cherry}} and {{c3::lemon}} for balanced flavor.",
+        "answer": "Raz - Cherry Lemon",
+        "category": "Citrus",
+        "tags": "Cherry and lemon zesty blend",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_15",
+        "question": "Raz - Cherry Strapple: {{c1::Sweet}} {{c2::cherry}} meets {{c3::crisp}} {{c4::apple}} in perfect harmony.",
+        "answer": "Raz - Cherry Strapple",
+        "category": "Fruit",
+        "tags": "Cherry and apple",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_16",
+        "question": "Raz - Citronade: {{c1::Lemon}} with {{c2::sweetness}}, reminiscent of refreshing {{c3::lemonade}}.",
+        "answer": "Raz - Citronade",
+        "category": "Citrus",
+        "tags": "Lemon,sweet,lemonade",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_17",
+        "question": "Raz - Clear: {{c1::Flavorless}} vaping option for {{c2::pure}} {{c3::cloud}} production without taste.",
+        "answer": "Raz - Clear",
+        "category": "Neutral",
+        "tags": "Flavorless clear vapor",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_18",
+        "question": "Raz - Clear Diamond: {{c1::Crystal}} {{c2::clear}} flavor variant for pristine cloud experience.",
+        "answer": "Raz - Clear Diamond",
+        "category": "Neutral",
+        "tags": "Crystal clear variant",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_19",
+        "question": "Raz - Clear Sapphire: {{c1::Pure}} {{c2::clear}} sapphire edition for clean vaping.",
+        "answer": "Raz - Clear Sapphire",
+        "category": "Neutral",
+        "tags": "Pure clear sapphire",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_20",
+        "question": "Raz - Day Crawler: {{c1::Vibrant}} blend of {{c2::tropical}} {{c3::citrus}} and {{c4::sweet}} {{c5::berries}} with {{c6::icy}} finish.",
+        "answer": "Raz - Day Crawler",
+        "category": "Tropical",
+        "tags": "Tropical citrus berries icy",
+        "difficulty": "Advanced"
+      },
+      {
+        "id": "raz_21",
+        "question": "Raz - Dragon Fruit Lemonade: {{c1::Exotic}} {{c2::dragonfruit}} and {{c3::lemonade}} blend for {{c4::tropical}} refreshment.",
+        "answer": "Raz - Dragon Fruit Lemonade",
+        "category": "Tropical",
+        "tags": "Dragon fruit and lemonade",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_22",
+        "question": "Raz - Fire & Ice: Intense {{c1::spice}} meets {{c2::cool}} {{c3::menthol}} in this daring combination.",
+        "answer": "Raz - Fire & Ice",
+        "category": "Mint",
+        "tags": "Spice and cool menthol",
+        "difficulty": "Advanced"
+      },
+      {
+        "id": "raz_23",
+        "question": "Raz - Frozen Banana: {{c1::Creamy}} {{c2::banana}} with {{c3::icy}} cool finish for smooth experience.",
+        "answer": "Raz - Frozen Banana",
+        "category": "Fruit",
+        "tags": "Banana with ice",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_24",
+        "question": "Raz - Frozen Cherry Apple: {{c1::Sweet}} {{c2::cherry}} and {{c3::crisp}} {{c4::apple}} with {{c5::icy}} chill.",
+        "answer": "Raz - Frozen Cherry Apple",
+        "category": "Fruit",
+        "tags": "Cherry apple iced",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_25",
+        "question": "Raz - Frozen Dragonfruit Lemon: {{c1::Exotic}} {{c2::dragonfruit}} with {{c3::bright}} {{c4::lemon}} and {{c5::cool}} finish.",
+        "answer": "Raz - Frozen Dragonfruit Lemon",
+        "category": "Tropical",
+        "tags": "Dragon fruit lemon iced",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_26",
+        "question": "Raz - Frozen Raspberry Watermelon: {{c1::Tart}} {{c2::raspberry}} and {{c3::juicy}} {{c4::watermelon}} with {{c5::ice}}.",
+        "answer": "Raz - Frozen Raspberry Watermelon",
+        "category": "Berry",
+        "tags": "Raspberry watermelon iced",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_27",
+        "question": "Raz - Georgia Peach: {{c1::Classic}} {{c2::juicy}} and {{c3::sweet}} {{c4::peach}} for peach lovers.",
+        "answer": "Raz - Georgia Peach",
+        "category": "Fruit",
+        "tags": "Juicy and sweet peach",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_28",
+        "question": "Raz - Graham Twist: {{c1::Sweet}} {{c2::graham cracker}} cookie flavor with {{c3::creamy}} finish.",
+        "answer": "Raz - Graham Twist",
+        "category": "Bakery",
+        "tags": "Graham cracker and creamy",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_29",
+        "question": "Raz - Grape Ice: {{c1::Bold}} {{c2::grape}} with {{c3::icy}} finish for {{c4::cool}} intensity.",
+        "answer": "Raz - Grape Ice",
+        "category": "Fruit",
+        "tags": "Bold grape with ice",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_30",
+        "question": "Raz - Iced Blue Dragon: {{c1::Mysterious}} {{c2::blue}} {{c3::dragonfruit}} with {{c4::icy}} menthol chill.",
+        "answer": "Raz - Iced Blue Dragon",
+        "category": "Tropical",
+        "tags": "Blue dragon fruit iced",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_31",
+        "question": "Raz - Icy Mint: {{c1::Refreshing}} {{c2::mint}} with {{c3::cool}} {{c4::icy}} sensation.",
+        "answer": "Raz - Icy Mint",
+        "category": "Mint",
+        "tags": "Mint and icy cool",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_32",
+        "question": "Raz - Jewel Spearmint: {{c1::Bright}} {{c2::spearmint}} with {{c3::jeweled}} smoothness.",
+        "answer": "Raz - Jewel Spearmint",
+        "category": "Mint",
+        "tags": "Spearmint bright jeweled",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_33",
+        "question": "Raz - Key Lime Pie: {{c1::Tart}} {{c2::key lime}} with {{c3::creamy}} {{c4::pie}} crust for dessert lovers.",
+        "answer": "Raz - Key Lime Pie",
+        "category": "Dessert",
+        "tags": "Key lime pie dessert",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_34",
+        "question": "Raz - Mango Colada: {{c1::Tropical}} {{c2::mango}} with {{c3::coconut}} {{c4::colada}} notes for beach vibes.",
+        "answer": "Raz - Mango Colada",
+        "category": "Tropical",
+        "tags": "Mango and coconut colada",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_35",
+        "question": "Raz - Mango Loco: {{c1::Wild}} and {{c2::crazy}} {{c3::mango}} flavor that goes loco.",
+        "answer": "Raz - Mango Loco",
+        "category": "Tropical",
+        "tags": "Wild mango loco",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_36",
+        "question": "Raz - Miami Mint: {{c1::Fresh}} {{c2::mint}} with {{c3::tropical}} elements for unique {{c4::menthol}} experience.",
+        "answer": "Raz - Miami Mint",
+        "category": "Mint",
+        "tags": "Fresh mint with tropical",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_37",
+        "question": "Raz - New York Mint: {{c1::Classic}} {{c2::mint}} with {{c3::urban}} sophistication and cool finish.",
+        "answer": "Raz - New York Mint",
+        "category": "Mint",
+        "tags": "Classic mint urban",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_38",
+        "question": "Raz - Night Crawler: {{c1::Mysterious}} {{c2::blend}} of {{c3::dark}} {{c4::berries}} with {{c5::rich}} complexity.",
+        "answer": "Raz - Night Crawler",
+        "category": "Berry",
+        "tags": "Mystery dark berry blend",
+        "difficulty": "Advanced"
+      },
+      {
+        "id": "raz_39",
+        "question": "Raz - Orange Mango: {{c1::Citrus}} {{c2::orange}} with {{c3::sweet}} {{c4::mango}} for tropical fusion.",
+        "answer": "Raz - Orange Mango",
+        "category": "Tropical",
+        "tags": "Orange and mango tropical",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_40",
+        "question": "Raz - Orange Raspberry: {{c1::Tangy}} {{c2::orange}} with {{c3::sweet}} {{c4::raspberry}} for citrus berry combo.",
+        "answer": "Raz - Orange Raspberry",
+        "category": "Berry",
+        "tags": "Orange and raspberry blend",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_41",
+        "question": "Raz - Peach Grapefruit: {{c1::Sweet}} {{c2::peach}} balanced with {{c3::tart}} {{c4::grapefruit}} for complex flavor.",
+        "answer": "Raz - Peach Grapefruit",
+        "category": "Citrus",
+        "tags": "Peach and grapefruit",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_42",
+        "question": "Raz - Peach Passionfruit: {{c1::Juicy}} {{c2::peach}} blended with {{c3::exotic}} {{c4::passionfruit}} sweetness.",
+        "answer": "Raz - Peach Passionfruit",
+        "category": "Tropical",
+        "tags": "Peach and passionfruit",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_43",
+        "question": "Raz - Peppermint Candy Cane: {{c1::Festive}} {{c2::peppermint}} with {{c3::candy}} {{c4::cane}} sweetness.",
+        "answer": "Raz - Peppermint Candy Cane",
+        "category": "Dessert",
+        "tags": "Peppermint candy cane",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_44",
+        "question": "Raz - Pineapple Passion Guava: {{c1::Tropical}} medley featuring {{c2::pineapple}}, {{c3::passionfruit}}, and {{c4::guava}}.",
+        "answer": "Raz - Pineapple Passion Guava",
+        "category": "Tropical",
+        "tags": "Pineapple,passionfruit,guava",
+        "difficulty": "Advanced"
+      },
+      {
+        "id": "raz_45",
+        "question": "Raz - Pink Lemonade Minty O's: {{c1::Sweet}} {{c2::pink lemonade}} with {{c3::minty}} {{c4::O}} cereal notes.",
+        "answer": "Raz - Pink Lemonade Minty O's",
+        "category": "Breakfast",
+        "tags": "Pink lemonade minty cereal",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_46",
+        "question": "Raz - Pink Strazzberry: {{c1::Bubbly}} {{c2::pink}} with {{c3::sweet}} {{c4::strawberry}} vibes.",
+        "answer": "Raz - Pink Strazzberry",
+        "category": "Berry",
+        "tags": "Pink strawberry bubbly",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_47",
+        "question": "Raz - Polar Ice: {{c1::Classic}} {{c2::menthol}} profile with {{c3::intense}} {{c4::cooling}} sensation.",
+        "answer": "Raz - Polar Ice",
+        "category": "Mint",
+        "tags": "Menthol with intense cool",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_48",
+        "question": "Raz - Pumpkin Pie Frosting: {{c1::Seasonal}} {{c2::pumpkin}} {{c3::pie}} with {{c4::creamy}} {{c5::frosting}} sweetness.",
+        "answer": "Raz - Pumpkin Pie Frosting",
+        "category": "Dessert",
+        "tags": "Pumpkin pie frosting",
+        "difficulty": "Advanced"
+      },
+      {
+        "id": "raz_49",
+        "question": "Raz - Rainbow Rain: {{c1::Colorful}} {{c2::rainbow}} of {{c3::candy}} flavors for playful vaping.",
+        "answer": "Raz - Rainbow Rain",
+        "category": "Carnival",
+        "tags": "Rainbow candy colors",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_50",
+        "question": "Raz - Raspberry Limeade: {{c1::Tart}} {{c2::raspberry}} with {{c3::bright}} {{c4::lime}} refreshment.",
+        "answer": "Raz - Raspberry Limeade",
+        "category": "Citrus",
+        "tags": "Raspberry and lime",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_51",
+        "question": "Raz - Razzle Dazzle: {{c1::Exciting}} {{c2::berry}} blend that dazzles with flavor.",
+        "answer": "Raz - Razzle Dazzle",
+        "category": "Berry",
+        "tags": "Exciting berry dazzle",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_52",
+        "question": "Raz - Sour Apple Ice: {{c1::Bold}} {{c2::sour}} {{c3::green apple}} meets {{c4::icy}} {{c5::coolness}}.",
+        "answer": "Raz - Sour Apple Ice",
+        "category": "Fruit",
+        "tags": "Sour apple ice",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_53",
+        "question": "Raz - Sour Mango Pineapple: {{c1::Tart}} {{c2::mango}} with {{c3::sweet}} {{c4::pineapple}} for sour-sweet experience.",
+        "answer": "Raz - Sour Mango Pineapple",
+        "category": "Tropical",
+        "tags": "Sour mango and sweet pineapple",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_54",
+        "question": "Raz - Sour Raspberry Watermelon: {{c1::Tangy}} {{c2::sour}} {{c3::raspberry}} and {{c4::juicy}} {{c5::watermelon}} blend.",
+        "answer": "Raz - Sour Raspberry Watermelon",
+        "category": "Berry",
+        "tags": "Sour raspberry watermelon",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_55",
+        "question": "Raz - Sour Strawberry: {{c1::Sweet}} {{c2::strawberry}} with {{c3::tart}} {{c4::sour}} twist.",
+        "answer": "Raz - Sour Strawberry",
+        "category": "Berry",
+        "tags": "Strawberry with sour",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_56",
+        "question": "Raz - Sour Watermelon Peach: {{c1::Juicy}} {{c2::watermelon}} with {{c3::sweet}} {{c4::peach}} and {{c5::sour}} notes.",
+        "answer": "Raz - Sour Watermelon Peach",
+        "category": "Fruit",
+        "tags": "Watermelon peach sour",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_57",
+        "question": "Raz - Strawberry Burst: {{c1::Explosive}} {{c2::strawberry}} flavor bursting with sweetness.",
+        "answer": "Raz - Strawberry Burst",
+        "category": "Berry",
+        "tags": "Strawberry burst sweet",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_58",
+        "question": "Raz - Strawberry Granola: {{c1::Fresh}} {{c2::strawberry}} with {{c3::crunchy}} {{c4::granola}} texture.",
+        "answer": "Raz - Strawberry Granola",
+        "category": "Breakfast",
+        "tags": "Strawberry and granola",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_59",
+        "question": "Raz - Strawberry Ice: {{c1::Sweet}} {{c2::strawberry}} with {{c3::cool}} {{c4::mint}} finish for refreshing taste.",
+        "answer": "Raz - Strawberry Ice",
+        "category": "Berry",
+        "tags": "Strawberry with cool mint",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_60",
+        "question": "Raz - Strawberry Kiwi Pear: {{c1::Fruity}} blend of {{c2::strawberry}}, {{c3::kiwi}}, and {{c4::pear}} harmony.",
+        "answer": "Raz - Strawberry Kiwi Pear",
+        "category": "Fruit",
+        "tags": "Strawberry kiwi pear",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_61",
+        "question": "Raz - Strawberry Orange Tang: {{c1::Citrus}} {{c2::orange}} with {{c3::bright}} {{c4::strawberry}} tang.",
+        "answer": "Raz - Strawberry Orange Tang",
+        "category": "Citrus",
+        "tags": "Strawberry and orange",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_62",
+        "question": "Raz - Strawberry Peach Gush: {{c1::Juicy}} {{c2::strawberry}} and {{c3::peach}} {{c4::candy}} burst.",
+        "answer": "Raz - Strawberry Peach Gush",
+        "category": "Fruit",
+        "tags": "Strawberry peach gush",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_63",
+        "question": "Raz - Strawberry Shortcake: {{c1::Sweet}} {{c2::creamy}} {{c3::strawberry}} dessert flavor reminiscent of {{c4::bakery}} treats.",
+        "answer": "Raz - Strawberry Shortcake",
+        "category": "Dessert",
+        "tags": "Strawberry and creamy dessert",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_64",
+        "question": "Raz - Strawberry Watermelon: {{c1::Sweet}} {{c2::strawberry}} with {{c3::cool}} {{c4::juicy}} {{c5::watermelon}} blend.",
+        "answer": "Raz - Strawberry Watermelon",
+        "category": "Berry",
+        "tags": "Strawberry and watermelon",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_65",
+        "question": "Raz - Tobacco: {{c1::Classic}} {{c2::tobacco}} flavor for traditional {{c3::vaping}} enthusiasts.",
+        "answer": "Raz - Tobacco",
+        "category": "Tobacco",
+        "tags": "Classic tobacco flavor",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_66",
+        "question": "Raz - Triple Berry Gush: {{c1::Explosive}} {{c2::strawberry}}, {{c3::raspberry}}, and {{c4::blueberry}} {{c5::candy}} burst.",
+        "answer": "Raz - Triple Berry Gush",
+        "category": "Berry",
+        "tags": "Triple berry candy gush",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_67",
+        "question": "Raz - Triple Berry Ice: {{c1::Strawberry}}, {{c2::raspberry}}, and {{c3::blueberry}} with {{c4::cool}} {{c5::menthol}} finish.",
+        "answer": "Raz - Triple Berry Ice",
+        "category": "Berry",
+        "tags": "Strawberry,raspberry,blueberry,menthol",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_68",
+        "question": "Raz - Tropical Gush: {{c1::Explosive}} {{c2::tropical}} {{c3::fruit}} {{c4::candy}} burst of flavor.",
+        "answer": "Raz - Tropical Gush",
+        "category": "Tropical",
+        "tags": "Tropical candy gush",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_69",
+        "question": "Raz - Tropical Storm: {{c1::Perfect}} blend of {{c2::tropical}} fruits including {{c3::pineapple}}, {{c4::mango}} and {{c5::citrus}}.",
+        "answer": "Raz - Tropical Storm",
+        "category": "Tropical",
+        "tags": "Pineapple,mango,citrus tropical",
+        "difficulty": "Advanced"
+      },
+      {
+        "id": "raz_70",
+        "question": "Raz - Watermelon Apple Rizzler: {{c1::Juicy}} {{c2::watermelon}} with {{c3::crisp}} {{c4::apple}} for refreshing blend.",
+        "answer": "Raz - Watermelon Apple Rizzler",
+        "category": "Fruit",
+        "tags": "Watermelon and apple",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_71",
+        "question": "Raz - Watermelon Ice: {{c1::Crisp}} {{c2::watermelon}} with {{c3::menthol}} finish for {{c4::refreshing}} coolness.",
+        "answer": "Raz - Watermelon Ice",
+        "category": "Fruit",
+        "tags": "Watermelon and menthol",
+        "difficulty": "Beginner"
+      },
+      {
+        "id": "raz_72",
+        "question": "Raz - White Grape Gush: {{c1::Elegant}} {{c2::white}} {{c3::grape}} with {{c4::candy}} burst texture.",
+        "answer": "Raz - White Grape Gush",
+        "category": "Fruit",
+        "tags": "White grape candy gush",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_73",
+        "question": "Raz - White Gummy Watermelon: {{c1::White}} {{c2::gummy}} {{c3::candy}} mixed with {{c4::watermelon}} for {{c5::nostalgic}} treat.",
+        "answer": "Raz - White Gummy Watermelon",
+        "category": "Carnival",
+        "tags": "Gummy candy and watermelon",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_74",
+        "question": "Raz - White Yummy Ice: {{c1::Creamy}} {{c2::white}} {{c3::candy}} flavor with {{c4::icy}} cool finish.",
+        "answer": "Raz - White Yummy Ice",
+        "category": "Dessert",
+        "tags": "White candy creamy ice",
+        "difficulty": "Intermediate"
+      },
+      {
+        "id": "raz_75",
+        "question": "Raz - Wintergreen: {{c1::Cool}} {{c2::wintergreen}} with {{c3::minty}} {{c4::fresh}} sensation.",
+        "answer": "Raz - Wintergreen",
+        "category": "Mint",
+        "tags": "Cool wintergreen minty",
+        "difficulty": "Beginner"
+      }
+    ],
+    "uploadedBy": "system-migration",
+    "createdAt": "2025-11-20T21:14:34.418Z",
+    "updatedAt": "2025-11-20T21:14:34.419Z",
+    "cardCount": 75
+  }
+}

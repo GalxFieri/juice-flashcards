@@ -1,0 +1,76 @@
+id	question	answer	category	difficulty
+raz-ruby-001	Raz - Ruby: A tasty mix of {{c1::cherry}}, {{c2::strawberry}}, and {{c3::raspberry}} flavors in a dream edition blend.	Raz - Ruby	Berry	Intermediate
+raz-tiffany-002	Raz - Tiffany: A refreshing blend of {{c1::kiwi}} and {{c2::watermelon}} for a light {{c3::summer}} vape.	Raz - Tiffany	Fruit	Beginner
+raz-violet-003	Raz - Violet: Sweet {{c1::grape}} and {{c2::strawberry}} flavors come together in harmonious fashion.	Raz - Violet	Berry	Intermediate
+raz-vicky-004	Raz - Vicky: {{c1::Pink lemonade}} that tastes like {{c2::summer}} refreshment.	Raz - Vicky	Citrus	Beginner
+raz-banana-coconut-005	Raz - Banana Coconut: Creamy {{c1::banana}} paired with smooth {{c2::coconut}} {{c3::tropical}} sweetness.	Raz - Banana Coconut	Tropical	Beginner
+raz-black-cherry-peach-006	Raz - Black Cherry Peach: Sweet {{c1::black cherry}} mixed with {{c2::juicy}} {{c3::peach}} for garden-fresh taste.	Raz - Black Cherry Peach	Berry	Intermediate
+raz-black-cherry-kiwi-007	Raz - Black Cherry Kiwi: {{c1::Bold}} {{c2::black cherry}} with {{c3::tangy}} {{c4::kiwi}} zest creating vibrant flavor.	Raz - Black Cherry Kiwi	Berry	Advanced
+raz-blue-raz-ice-008	Raz - Blue Raz Ice: {{c1::Blue raspberry}} with {{c2::icy}} finish for {{c3::cool}} refreshment.	Raz - Blue Raz Ice	Berry	Beginner
+raz-blue-raz-cotton-candy-009	Raz - Blue Raz Cotton Candy: {{c1::Sweet}} {{c2::blue raspberry}} meets {{c3::fluffy}} {{c4::cotton candy}} nostalgia.	Raz - Blue Raz Cotton Candy	Carnival	Intermediate
+raz-blue-raz-gush-010	Raz - Blue Raz Gush: Explosive {{c1::blue raspberry}} {{c2::candy}} flavor bursting with sweetness.	Raz - Blue Raz Gush	Carnival	Intermediate
+raz-blueberry-watermelon-011	Raz - Blueberry Watermelon: {{c1::Juicy}} {{c2::blueberry}} and {{c3::watermelon}} combination for refreshing experience.	Raz - Blueberry Watermelon	Berry	Beginner
+raz-bangin-sour-berries-012	Raz - Bangin Sour Berries: {{c1::Sour}} {{c2::berry}} medley featuring multiple berry flavors for tang lovers.	Raz - Bangin Sour Berries	Berry	Intermediate
+raz-cactus-jack-013	Raz - Cactus Jack: {{c1::Subtly}} {{c2::sweet}} and {{c3::refreshing}} {{c4::cactus}} profile for adventurous vapers.	Raz - Cactus Jack	Fruit	Intermediate
+raz-cherry-lemon-014	Raz - Cherry Lemon: {{c1::Zesty}} combination of {{c2::cherry}} and {{c3::lemon}} for balanced flavor.	Raz - Cherry Lemon	Citrus	Beginner
+raz-cherry-strapple-015	Raz - Cherry Strapple: {{c1::Sweet}} {{c2::cherry}} meets {{c3::crisp}} {{c4::apple}} in perfect harmony.	Raz - Cherry Strapple	Fruit	Intermediate
+raz-citronade-016	Raz - Citronade: {{c1::Lemon}} with {{c2::sweetness}}, reminiscent of refreshing {{c3::lemonade}}.	Raz - Citronade	Citrus	Beginner
+raz-clear-017	Raz - Clear: {{c1::Flavorless}} vaping option for {{c2::pure}} {{c3::cloud}} production without taste.	Raz - Clear	Neutral	Beginner
+raz-clear-diamond-018	Raz - Clear Diamond: {{c1::Crystal}} {{c2::clear}} flavor variant for pristine cloud experience.	Raz - Clear Diamond	Neutral	Beginner
+raz-clear-sapphire-019	Raz - Clear Sapphire: {{c1::Pure}} {{c2::clear}} sapphire edition for clean vaping.	Raz - Clear Sapphire	Neutral	Beginner
+raz-day-crawler-020	Raz - Day Crawler: {{c1::Vibrant}} blend of {{c2::tropical}} {{c3::citrus}} and {{c4::sweet}} {{c5::berries}} with {{c6::icy}} finish.	Raz - Day Crawler	Tropical	Advanced
+raz-dragon-fruit-lemonade-021	Raz - Dragon Fruit Lemonade: {{c1::Exotic}} {{c2::dragonfruit}} and {{c3::lemonade}} blend for {{c4::tropical}} refreshment.	Raz - Dragon Fruit Lemonade	Tropical	Intermediate
+raz-fire-ice-022	Raz - Fire & Ice: Intense {{c1::spice}} meets {{c2::cool}} {{c3::menthol}} in this daring combination.	Raz - Fire & Ice	Mint	Advanced
+raz-frozen-banana-023	Raz - Frozen Banana: {{c1::Creamy}} {{c2::banana}} with {{c3::icy}} cool finish for smooth experience.	Raz - Frozen Banana	Fruit	Intermediate
+raz-frozen-cherry-apple-024	Raz - Frozen Cherry Apple: {{c1::Sweet}} {{c2::cherry}} and {{c3::crisp}} {{c4::apple}} with {{c5::icy}} chill.	Raz - Frozen Cherry Apple	Fruit	Intermediate
+raz-frozen-dragonfruit-lemon-025	Raz - Frozen Dragonfruit Lemon: {{c1::Exotic}} {{c2::dragonfruit}} with {{c3::bright}} {{c4::lemon}} and {{c5::cool}} finish.	Raz - Frozen Dragonfruit Lemon	Tropical	Intermediate
+raz-frozen-raspberry-watermelon-026	Raz - Frozen Raspberry Watermelon: {{c1::Tart}} {{c2::raspberry}} and {{c3::juicy}} {{c4::watermelon}} with {{c5::ice}}.	Raz - Frozen Raspberry Watermelon	Berry	Intermediate
+raz-georgia-peach-027	Raz - Georgia Peach: {{c1::Classic}} {{c2::juicy}} and {{c3::sweet}} {{c4::peach}} for peach lovers.	Raz - Georgia Peach	Fruit	Beginner
+raz-graham-twist-028	Raz - Graham Twist: {{c1::Sweet}} {{c2::graham cracker}} cookie flavor with {{c3::creamy}} finish.	Raz - Graham Twist	Bakery	Intermediate
+raz-grape-ice-029	Raz - Grape Ice: {{c1::Bold}} {{c2::grape}} with {{c3::icy}} finish for {{c4::cool}} intensity.	Raz - Grape Ice	Fruit	Beginner
+raz-iced-blue-dragon-030	Raz - Iced Blue Dragon: {{c1::Mysterious}} {{c2::blue}} {{c3::dragonfruit}} with {{c4::icy}} menthol chill.	Raz - Iced Blue Dragon	Tropical	Intermediate
+raz-icy-mint-031	Raz - Icy Mint: {{c1::Refreshing}} {{c2::mint}} with {{c3::cool}} {{c4::icy}} sensation.	Raz - Icy Mint	Mint	Beginner
+raz-jewel-spearmint-032	Raz - Jewel Spearmint: {{c1::Bright}} {{c2::spearmint}} with {{c3::jeweled}} smoothness.	Raz - Jewel Spearmint	Mint	Intermediate
+raz-key-lime-pie-033	Raz - Key Lime Pie: {{c1::Tart}} {{c2::key lime}} with {{c3::creamy}} {{c4::pie}} crust for dessert lovers.	Raz - Key Lime Pie	Dessert	Intermediate
+raz-mango-colada-034	Raz - Mango Colada: {{c1::Tropical}} {{c2::mango}} with {{c3::coconut}} {{c4::colada}} notes for beach vibes.	Raz - Mango Colada	Tropical	Intermediate
+raz-mango-loco-035	Raz - Mango Loco: {{c1::Wild}} and {{c2::crazy}} {{c3::mango}} flavor that goes loco.	Raz - Mango Loco	Tropical	Intermediate
+raz-miami-mint-036	Raz - Miami Mint: {{c1::Fresh}} {{c2::mint}} with {{c3::tropical}} elements for unique {{c4::menthol}} experience.	Raz - Miami Mint	Mint	Intermediate
+raz-new-york-mint-037	Raz - New York Mint: {{c1::Classic}} {{c2::mint}} with {{c3::urban}} sophistication and cool finish.	Raz - New York Mint	Mint	Intermediate
+raz-night-crawler-038	Raz - Night Crawler: {{c1::Mysterious}} {{c2::blend}} of {{c3::dark}} {{c4::berries}} with {{c5::rich}} complexity.	Raz - Night Crawler	Berry	Advanced
+raz-orange-mango-039	Raz - Orange Mango: {{c1::Citrus}} {{c2::orange}} with {{c3::sweet}} {{c4::mango}} for tropical fusion.	Raz - Orange Mango	Tropical	Intermediate
+raz-orange-raspberry-040	Raz - Orange Raspberry: {{c1::Tangy}} {{c2::orange}} with {{c3::sweet}} {{c4::raspberry}} for citrus berry combo.	Raz - Orange Raspberry	Berry	Intermediate
+raz-peach-grapefruit-041	Raz - Peach Grapefruit: {{c1::Sweet}} {{c2::peach}} balanced with {{c3::tart}} {{c4::grapefruit}} for complex flavor.	Raz - Peach Grapefruit	Citrus	Intermediate
+raz-peach-passionfruit-042	Raz - Peach Passionfruit: {{c1::Juicy}} {{c2::peach}} blended with {{c3::exotic}} {{c4::passionfruit}} sweetness.	Raz - Peach Passionfruit	Tropical	Intermediate
+raz-peppermint-candy-cane-043	Raz - Peppermint Candy Cane: {{c1::Festive}} {{c2::peppermint}} with {{c3::candy}} {{c4::cane}} sweetness.	Raz - Peppermint Candy Cane	Dessert	Intermediate
+raz-pineapple-passion-guava-044	Raz - Pineapple Passion Guava: {{c1::Tropical}} medley featuring {{c2::pineapple}}, {{c3::passionfruit}}, and {{c4::guava}}.	Raz - Pineapple Passion Guava	Tropical	Advanced
+raz-pink-lemonade-minty-o-s-045	Raz - Pink Lemonade Minty O's: {{c1::Sweet}} {{c2::pink lemonade}} with {{c3::minty}} {{c4::O}} cereal notes.	Raz - Pink Lemonade Minty O's	Breakfast	Intermediate
+raz-pink-strazzberry-046	Raz - Pink Strazzberry: {{c1::Bubbly}} {{c2::pink}} with {{c3::sweet}} {{c4::strawberry}} vibes.	Raz - Pink Strazzberry	Berry	Beginner
+raz-polar-ice-047	Raz - Polar Ice: {{c1::Classic}} {{c2::menthol}} profile with {{c3::intense}} {{c4::cooling}} sensation.	Raz - Polar Ice	Mint	Beginner
+raz-pumpkin-pie-frosting-048	Raz - Pumpkin Pie Frosting: {{c1::Seasonal}} {{c2::pumpkin}} {{c3::pie}} with {{c4::creamy}} {{c5::frosting}} sweetness.	Raz - Pumpkin Pie Frosting	Dessert	Advanced
+raz-rainbow-rain-049	Raz - Rainbow Rain: {{c1::Colorful}} {{c2::rainbow}} of {{c3::candy}} flavors for playful vaping.	Raz - Rainbow Rain	Carnival	Intermediate
+raz-raspberry-limeade-050	Raz - Raspberry Limeade: {{c1::Tart}} {{c2::raspberry}} with {{c3::bright}} {{c4::lime}} refreshment.	Raz - Raspberry Limeade	Citrus	Intermediate
+raz-razzle-dazzle-051	Raz - Razzle Dazzle: {{c1::Exciting}} {{c2::berry}} blend that dazzles with flavor.	Raz - Razzle Dazzle	Berry	Intermediate
+raz-sour-apple-ice-052	Raz - Sour Apple Ice: {{c1::Bold}} {{c2::sour}} {{c3::green apple}} meets {{c4::icy}} {{c5::coolness}}.	Raz - Sour Apple Ice	Fruit	Intermediate
+raz-sour-mango-pineapple-053	Raz - Sour Mango Pineapple: {{c1::Tart}} {{c2::mango}} with {{c3::sweet}} {{c4::pineapple}} for sour-sweet experience.	Raz - Sour Mango Pineapple	Tropical	Intermediate
+raz-sour-raspberry-watermelon-054	Raz - Sour Raspberry Watermelon: {{c1::Tangy}} {{c2::sour}} {{c3::raspberry}} and {{c4::juicy}} {{c5::watermelon}} blend.	Raz - Sour Raspberry Watermelon	Berry	Intermediate
+raz-sour-strawberry-055	Raz - Sour Strawberry: {{c1::Sweet}} {{c2::strawberry}} with {{c3::tart}} {{c4::sour}} twist.	Raz - Sour Strawberry	Berry	Beginner
+raz-sour-watermelon-peach-056	Raz - Sour Watermelon Peach: {{c1::Juicy}} {{c2::watermelon}} with {{c3::sweet}} {{c4::peach}} and {{c5::sour}} notes.	Raz - Sour Watermelon Peach	Fruit	Intermediate
+raz-strawberry-burst-057	Raz - Strawberry Burst: {{c1::Explosive}} {{c2::strawberry}} flavor bursting with sweetness.	Raz - Strawberry Burst	Berry	Beginner
+raz-strawberry-granola-058	Raz - Strawberry Granola: {{c1::Fresh}} {{c2::strawberry}} with {{c3::crunchy}} {{c4::granola}} texture.	Raz - Strawberry Granola	Breakfast	Intermediate
+raz-strawberry-ice-059	Raz - Strawberry Ice: {{c1::Sweet}} {{c2::strawberry}} with {{c3::cool}} {{c4::mint}} finish for refreshing taste.	Raz - Strawberry Ice	Berry	Beginner
+raz-strawberry-kiwi-pear-060	Raz - Strawberry Kiwi Pear: {{c1::Fruity}} blend of {{c2::strawberry}}, {{c3::kiwi}}, and {{c4::pear}} harmony.	Raz - Strawberry Kiwi Pear	Fruit	Intermediate
+raz-strawberry-orange-tang-061	Raz - Strawberry Orange Tang: {{c1::Citrus}} {{c2::orange}} with {{c3::bright}} {{c4::strawberry}} tang.	Raz - Strawberry Orange Tang	Citrus	Intermediate
+raz-strawberry-peach-gush-062	Raz - Strawberry Peach Gush: {{c1::Juicy}} {{c2::strawberry}} and {{c3::peach}} {{c4::candy}} burst.	Raz - Strawberry Peach Gush	Fruit	Intermediate
+raz-strawberry-shortcake-063	Raz - Strawberry Shortcake: {{c1::Sweet}} {{c2::creamy}} {{c3::strawberry}} dessert flavor reminiscent of {{c4::bakery}} treats.	Raz - Strawberry Shortcake	Dessert	Intermediate
+raz-strawberry-watermelon-064	Raz - Strawberry Watermelon: {{c1::Sweet}} {{c2::strawberry}} with {{c3::cool}} {{c4::juicy}} {{c5::watermelon}} blend.	Raz - Strawberry Watermelon	Berry	Beginner
+raz-tobacco-065	Raz - Tobacco: {{c1::Classic}} {{c2::tobacco}} flavor for traditional {{c3::vaping}} enthusiasts.	Raz - Tobacco	Tobacco	Beginner
+raz-triple-berry-gush-066	Raz - Triple Berry Gush: {{c1::Explosive}} {{c2::strawberry}}, {{c3::raspberry}}, and {{c4::blueberry}} {{c5::candy}} burst.	Raz - Triple Berry Gush	Berry	Intermediate
+raz-triple-berry-ice-067	Raz - Triple Berry Ice: {{c1::Strawberry}}, {{c2::raspberry}}, and {{c3::blueberry}} with {{c4::cool}} {{c5::menthol}} finish.	Raz - Triple Berry Ice	Berry	Intermediate
+raz-tropical-gush-068	Raz - Tropical Gush: {{c1::Explosive}} {{c2::tropical}} {{c3::fruit}} {{c4::candy}} burst of flavor.	Raz - Tropical Gush	Tropical	Intermediate
+raz-tropical-storm-069	Raz - Tropical Storm: {{c1::Perfect}} blend of {{c2::tropical}} fruits including {{c3::pineapple}}, {{c4::mango}} and {{c5::citrus}}.	Raz - Tropical Storm	Tropical	Advanced
+raz-watermelon-apple-rizzler-070	Raz - Watermelon Apple Rizzler: {{c1::Juicy}} {{c2::watermelon}} with {{c3::crisp}} {{c4::apple}} for refreshing blend.	Raz - Watermelon Apple Rizzler	Fruit	Intermediate
+raz-watermelon-ice-071	Raz - Watermelon Ice: {{c1::Crisp}} {{c2::watermelon}} with {{c3::menthol}} finish for {{c4::refreshing}} coolness.	Raz - Watermelon Ice	Fruit	Beginner
+raz-white-grape-gush-072	Raz - White Grape Gush: {{c1::Elegant}} {{c2::white}} {{c3::grape}} with {{c4::candy}} burst texture.	Raz - White Grape Gush	Fruit	Intermediate
+raz-white-gummy-watermelon-073	Raz - White Gummy Watermelon: {{c1::White}} {{c2::gummy}} {{c3::candy}} mixed with {{c4::watermelon}} for {{c5::nostalgic}} treat.	Raz - White Gummy Watermelon	Carnival	Intermediate
+raz-white-yummy-ice-074	Raz - White Yummy Ice: {{c1::Creamy}} {{c2::white}} {{c3::candy}} flavor with {{c4::icy}} cool finish.	Raz - White Yummy Ice	Dessert	Intermediate
+raz-wintergreen-075	Raz - Wintergreen: {{c1::Cool}} {{c2::wintergreen}} with {{c3::minty}} {{c4::fresh}} sensation.	Raz - Wintergreen	Mint	Beginner

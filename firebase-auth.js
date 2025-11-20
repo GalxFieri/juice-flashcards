@@ -26,6 +26,24 @@ let getDocs = null;
 let query = null;
 
 /**
+ * Hash PIN using SHA-256 for secure storage
+ * Creates a reproducible hash for PIN verification
+ */
+async function hashPin(pin) {
+    try {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(pin);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+    } catch (error) {
+        console.error('Error hashing PIN:', error);
+        throw error;
+    }
+}
+
+/**
  * Initialize Firebase
  */
 async function initializeFirebase() {
@@ -96,13 +114,16 @@ async function signUp(username, pin) {
             return { success: false, error: 'Username already exists' };
         }
 
+        // Hash PIN before storing
+        const pinHash = await hashPin(pin);
+
         // Create user document
         const { setDoc, doc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
         const userId = generateUserId();
 
         const userDoc = {
             username: username,
-            pin: pin,  // Plain text for store use
+            pinHash: pinHash,  // Hashed PIN for security
             userId: userId,
             createdAt: serverTimestamp(),
             lastLoginAt: serverTimestamp()
@@ -112,6 +133,9 @@ async function signUp(username, pin) {
 
         // Create session
         createSession(username, userId);
+
+        // Cache plain PIN for offline use
+        cacheCredentials(username, pin);
 
         return { success: true, username: username, userId: userId };
     } catch (error) {
@@ -174,8 +198,21 @@ async function signInCloud(username, pin) {
 
         const userData = querySnapshot.docs[0].data();
 
-        if (userData.pin !== pin) {
+        // Compare PIN with hash (support both old plain text and new hashed)
+        const pinHash = await hashPin(pin);
+        const isValidPin = (userData.pinHash === pinHash) || (userData.pin === pin);
+
+        if (!isValidPin) {
             return { success: false, error: 'Invalid PIN' };
+        }
+
+        // If user still has plain text PIN, migrate to hash
+        if (userData.pin === pin && !userData.pinHash) {
+            const { updateDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+            await updateDoc(doc(db, 'users', username), {
+                pinHash: pinHash,
+                pin: null // Remove plain text PIN
+            });
         }
 
         // Update last login
@@ -261,7 +298,12 @@ async function changePin(username, oldPin, newPin) {
         }
 
         const userData = querySnapshot.docs[0].data();
-        if (userData.pin !== oldPin) {
+
+        // Compare old PIN with hash (support both old plain text and new hashed)
+        const oldPinHash = await hashPin(oldPin);
+        const isValidPin = (userData.pinHash === oldPinHash) || (userData.pin === oldPin);
+
+        if (!isValidPin) {
             return { success: false, error: 'Old PIN is incorrect' };
         }
 
@@ -270,10 +312,14 @@ async function changePin(username, oldPin, newPin) {
             return { success: false, error: 'New PIN must be exactly 4 digits' };
         }
 
-        // Update PIN in Firestore
+        // Hash new PIN before storing
+        const newPinHash = await hashPin(newPin);
+
+        // Update PIN in Firestore (use hashed PIN)
         const { updateDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
         await updateDoc(doc(db, 'users', username.toLowerCase()), {
-            pin: newPin
+            pinHash: newPinHash,
+            pin: null // Remove old plain text PIN field
         });
 
         // Update cached credentials
@@ -532,6 +578,129 @@ async function loadCardHistories(username, profileId) {
     }
 }
 
+/**
+ * Queue a card rating for offline storage
+ * Used when user is offline and rates a card
+ */
+function queueCardRating(username, profileId, cardId, difficulty) {
+    try {
+        const queueKey = 'juice_pending_ratings';
+        const queue = JSON.parse(localStorage.getItem(queueKey) || '[]');
+
+        // Add rating to queue with metadata
+        queue.push({
+            username: username.toLowerCase(),
+            profileId: profileId,
+            cardId: cardId,
+            difficulty: difficulty,
+            ratedAt: new Date().toISOString(),
+            syncAttempts: 0
+        });
+
+        localStorage.setItem(queueKey, JSON.stringify(queue));
+        console.log(`Card ${cardId} queued for sync (total pending: ${queue.length})`);
+        return true;
+    } catch (error) {
+        console.error('Error queueing card rating:', error);
+        return false;
+    }
+}
+
+/**
+ * Get all pending card ratings from queue
+ */
+function getPendingRatings() {
+    try {
+        const queueKey = 'juice_pending_ratings';
+        return JSON.parse(localStorage.getItem(queueKey) || '[]');
+    } catch (error) {
+        console.error('Error retrieving pending ratings:', error);
+        return [];
+    }
+}
+
+/**
+ * Sync pending card ratings to Firestore
+ * Called when user comes online or at app startup
+ */
+async function syncPendingRatings(username, profileId) {
+    try {
+        const pending = getPendingRatings();
+
+        if (pending.length === 0) {
+            console.log('No pending ratings to sync');
+            return { success: true, synced: 0 };
+        }
+
+        console.log(`Syncing ${pending.length} pending card ratings...`);
+
+        // Filter pending ratings for this user/profile
+        const toSync = pending.filter(r =>
+            r.username === username.toLowerCase() && r.profileId === profileId
+        );
+
+        if (toSync.length === 0) {
+            console.log('No pending ratings for current user/profile');
+            return { success: true, synced: 0 };
+        }
+
+        let synced = 0;
+        const failed = [];
+
+        // Sync each pending rating
+        for (const rating of toSync) {
+            try {
+                await saveCardRating(
+                    rating.username,
+                    rating.profileId,
+                    rating.cardId,
+                    rating.difficulty
+                );
+                synced++;
+            } catch (error) {
+                console.warn(`Failed to sync card ${rating.cardId}:`, error);
+                failed.push(rating.cardId);
+            }
+        }
+
+        // Remove successfully synced ratings from queue
+        const updatedQueue = pending.filter(r => {
+            // Keep if it's not in the "to sync" list, or if it failed
+            const wasInToSync = toSync.find(s => s.cardId === r.cardId && s.profileId === r.profileId);
+            return !wasInToSync || failed.includes(r.cardId);
+        });
+
+        localStorage.setItem('juice_pending_ratings', JSON.stringify(updatedQueue));
+
+        const result = {
+            success: failed.length === 0,
+            synced: synced,
+            failed: failed.length,
+            remainingInQueue: updatedQueue.length
+        };
+
+        console.log(`Sync complete: ${synced} synced, ${failed.length} failed, ${updatedQueue.length} remaining`);
+        return result;
+    } catch (error) {
+        console.error('Error syncing pending ratings:', error);
+        return { success: false, synced: 0, error: error.message };
+    }
+}
+
+/**
+ * Clear the pending ratings queue (for testing/reset)
+ */
+function clearPendingRatings() {
+    try {
+        localStorage.removeItem('juice_pending_ratings');
+        console.log('Pending ratings queue cleared');
+        return true;
+    } catch (error) {
+        console.error('Error clearing pending ratings:', error);
+        return false;
+    }
+}
+
 // Admin functions
 async function getAllUsers() {
     try {
@@ -624,10 +793,13 @@ async function createAdminAccount(username, pin) {
             throw new Error('PIN must be exactly 4 digits');
         }
 
+        // Hash PIN before storing
+        const pinHash = await hashPin(pin);
+
         // Create new admin user
         await setDoc(userRef, {
             username: username,
-            pin: pin,
+            pinHash: pinHash,  // Use hashed PIN for security
             isAdmin: true,
             createdAt: new Date().toISOString(),
             isActive: true
@@ -648,9 +820,13 @@ async function resetUserPIN(username, newPin) {
             throw new Error('PIN must be exactly 4 digits');
         }
 
+        // Hash PIN before storing
+        const pinHash = await hashPin(newPin);
+
         const userRef = doc(db, 'users', username);
         await updateDoc(userRef, {
-            pin: newPin,
+            pinHash: pinHash,  // Use hashed PIN for security
+            pin: null,  // Remove old plain text PIN field
             pinResetAt: new Date().toISOString()
         });
 
@@ -712,6 +888,261 @@ async function deleteUserProgress(username, profileId) {
     }
 }
 
+/**
+ * Get all available categories
+ * @returns {array} - Array of category objects: { categoryId, name, description, cardSetCount, createdAt }
+ */
+async function getCategories() {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        const categoriesRef = collection(db, 'categories');
+        const querySnapshot = await getDocs(categoriesRef);
+
+        const categories = [];
+        querySnapshot.forEach((docSnapshot) => {
+            const data = docSnapshot.data();
+            categories.push({
+                categoryId: docSnapshot.id,
+                name: data.name,
+                description: data.description || '',
+                cardSetCount: data.cardSetCount || 0,
+                createdAt: data.createdAt,
+                createdBy: data.createdBy
+            });
+        });
+
+        console.log('Categories loaded:', categories.length);
+        return categories;
+    } catch (error) {
+        console.error('Error loading categories:', error);
+        throw error;
+    }
+}
+
+/**
+ * Save a new category
+ * @param {string} categoryId - Unique identifier for the category (lowercase, no spaces)
+ * @param {object} categoryData - Category data: { name, description }
+ * @returns {object} - { success: boolean, categoryId: string, message: string }
+ */
+async function saveCategory(categoryId, categoryData) {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        // Validate required fields
+        if (!categoryId || !categoryData.name) {
+            throw new Error('Invalid category data: missing ID or name');
+        }
+
+        // Validate category ID format
+        if (!/^[a-z0-9-]+$/.test(categoryId)) {
+            throw new Error('Category ID must be lowercase with only letters, numbers, and hyphens');
+        }
+
+        // Create category document
+        const categoryRef = doc(db, 'categories', categoryId);
+
+        const categoryDoc = {
+            name: categoryData.name,
+            description: categoryData.description || '',
+            cardSetCount: 0,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            createdBy: categoryData.createdBy || 'admin'
+        };
+
+        await setDoc(categoryRef, categoryDoc);
+
+        console.log('Category saved:', categoryId, categoryData.name);
+        return {
+            success: true,
+            categoryId: categoryId,
+            message: `Category "${categoryData.name}" created successfully`
+        };
+    } catch (error) {
+        console.error('Error saving category:', error);
+        throw error;
+    }
+}
+
+/**
+ * Update a category
+ * @param {string} categoryId - ID of the category to update
+ * @param {object} updates - Fields to update: { name, description }
+ * @returns {object} - { success: boolean, message: string }
+ */
+async function updateCategory(categoryId, updates) {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        if (!categoryId) {
+            throw new Error('Category ID is required');
+        }
+
+        const categoryRef = doc(db, 'categories', categoryId);
+        const updateData = {
+            ...updates,
+            updatedAt: new Date().toISOString()
+        };
+
+        await updateDoc(categoryRef, updateData);
+
+        console.log('Category updated:', categoryId);
+        return {
+            success: true,
+            message: `Category "${updates.name || categoryId}" updated successfully`
+        };
+    } catch (error) {
+        console.error('Error updating category:', error);
+        throw error;
+    }
+}
+
+/**
+ * Delete a category
+ * @param {string} categoryId - ID of the category to delete
+ * @returns {object} - { success: boolean, message: string }
+ */
+async function deleteCategory(categoryId) {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        if (!categoryId) {
+            throw new Error('Category ID is required');
+        }
+
+        const categoryRef = doc(db, 'categories', categoryId);
+        await deleteDoc(categoryRef);
+
+        console.log('Category deleted:', categoryId);
+        return {
+            success: true,
+            message: `Category "${categoryId}" deleted successfully`
+        };
+    } catch (error) {
+        console.error('Error deleting category:', error);
+        throw error;
+    }
+}
+
+/**
+ * Save a card set to Firestore
+ * @param {string} setId - Unique identifier for the card set
+ * @param {object} setData - Card set data: { name, category, description, cards[], uploadedBy }
+ * @returns {object} - { success: boolean, setId: string, message: string }
+ */
+async function saveCardSet(setId, setData) {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        // Validate required fields
+        if (!setId || !setData.name || !setData.cards || !Array.isArray(setData.cards)) {
+            throw new Error('Invalid card set data: missing name or cards array');
+        }
+
+        // Create card set document
+        const cardSetRef = doc(db, 'cardSets', setId);
+
+        const cardSetDoc = {
+            name: setData.name,
+            category: setData.category || 'uncategorized',
+            description: setData.description || '',
+            cardCount: setData.cards.length,
+            cards: setData.cards,
+            uploadedBy: setData.uploadedBy || 'admin',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
+
+        await setDoc(cardSetRef, cardSetDoc);
+
+        console.log('Card set saved:', setId, cardSetDoc.cardCount, 'cards');
+        return {
+            success: true,
+            setId: setId,
+            message: `Card set "${setData.name}" saved successfully with ${setData.cards.length} cards`
+        };
+    } catch (error) {
+        console.error('Error saving card set:', error);
+        throw error;
+    }
+}
+
+/**
+ * Get all available card sets
+ * @returns {array} - Array of card set objects: { setId, name, category, description, cardCount, createdAt }
+ */
+async function getCardSets() {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        const cardSetsRef = collection(db, 'cardSets');
+        const querySnapshot = await getDocs(cardSetsRef);
+
+        const cardSets = [];
+        querySnapshot.forEach((docSnapshot) => {
+            const data = docSnapshot.data();
+            cardSets.push({
+                setId: docSnapshot.id,
+                name: data.name,
+                category: data.category,
+                description: data.description,
+                cardCount: data.cardCount,
+                createdAt: data.createdAt,
+                uploadedBy: data.uploadedBy
+            });
+        });
+
+        console.log('Card sets loaded:', cardSets.length);
+        return cardSets;
+    } catch (error) {
+        console.error('Error loading card sets:', error);
+        throw error;
+    }
+}
+
+/**
+ * Delete a card set from Firestore
+ * @param {string} setId - ID of the card set to delete
+ * @returns {object} - { success: boolean, message: string }
+ */
+async function deleteCardSet(setId) {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        if (!setId) {
+            throw new Error('Card set ID is required');
+        }
+
+        const cardSetRef = doc(db, 'cardSets', setId);
+        await deleteDoc(cardSetRef);
+
+        console.log('Card set deleted:', setId);
+        return {
+            success: true,
+            message: `Card set "${setId}" deleted successfully`
+        };
+    } catch (error) {
+        console.error('Error deleting card set:', error);
+        throw error;
+    }
+}
+
 // Export functions for use in index.html
 window.JuiceAuth = {
     initializeFirebase,
@@ -725,10 +1156,21 @@ window.JuiceAuth = {
     syncProfilesFromCloud,
     saveCardRating,
     loadCardHistories,
+    queueCardRating,
+    getPendingRatings,
+    syncPendingRatings,
+    clearPendingRatings,
     getAllUsers,
     isUserAdmin,
     createAdminAccount,
     resetUserPIN,
     deleteUser,
-    deleteUserProgress
+    deleteUserProgress,
+    saveCardSet,
+    getCardSets,
+    deleteCardSet,
+    getCategories,
+    saveCategory,
+    updateCategory,
+    deleteCategory
 };

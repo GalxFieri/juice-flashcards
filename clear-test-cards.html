@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Test Cards - Juice Flashcards</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #764ba2;
+        }
+        .button.danger {
+            background: #ff6b6b;
+        }
+        .button.danger:hover {
+            background: #ff5252;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗑️ Clear Test Cards</h1>
+        <p>This page will help you clear the old test cards from your browser's local storage.</p>
+        <p>The following data will be removed:</p>
+        <ul style="text-align: left; color: #666;">
+            <li><code>juice_cards</code> - Old test cards from localStorage</li>
+            <li><code>juice_profiles</code> - User profiles data</li>
+            <li><code>juice_current_profile</code> - Current profile reference</li>
+        </ul>
+        <p style="color: #ff6b6b; font-weight: 600;">⚠️ This action cannot be undone!</p>
+        
+        <div>
+            <button class="button" onclick="showInfo()">ℹ️ What Will Be Cleared</button>
+            <button class="button danger" onclick="clearData()">🗑️ Clear All Test Data</button>
+        </div>
+
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        function showInfo() {
+            const items = Object.keys(localStorage);
+            const juiceItems = items.filter(key => key.startsWith('juice'));
+            
+            let message = `<strong>Found ${juiceItems.length} items in localStorage:</strong><br>`;
+            juiceItems.forEach(key => {
+                const value = localStorage.getItem(key);
+                const preview = value.length > 50 ? value.substring(0, 50) + '...' : value;
+                message += `<div style="margin-top: 10px; text-align: left; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 4px;">
+                    <strong>${key}</strong><br>
+                    <small>${preview}</small>
+                </div>`;
+            });
+
+            showMessage(message, 'info');
+        }
+
+        function clearData() {
+            const confirmed = confirm('Are you sure you want to clear all test card data? This cannot be undone.');
+            if (!confirmed) return;
+
+            try {
+                // Clear Juice-related localStorage items
+                const itemsToClear = [
+                    'juice_cards',
+                    'juice_profiles',
+                    'juice_current_profile',
+                    'juice_pending_ratings'
+                ];
+
+                itemsToClear.forEach(key => {
+                    localStorage.removeItem(key);
+                    console.log(`Cleared: ${key}`);
+                });
+
+                // Clear any profile-specific data
+                const allKeys = Object.keys(localStorage);
+                allKeys.forEach(key => {
+                    if (key.startsWith('profile_') || key.startsWith('juice_')) {
+                        localStorage.removeItem(key);
+                        console.log(`Cleared: ${key}`);
+                    }
+                });
+
+                // Clear IndexedDB if it exists
+                const dbs = ['juice-flashcards', 'juice'];
+                dbs.forEach(dbName => {
+                    const request = indexedDB.deleteDatabase(dbName);
+                    request.onsuccess = () => console.log(`Cleared IndexedDB: ${dbName}`);
+                    request.onerror = () => console.log(`Could not clear IndexedDB: ${dbName}`);
+                });
+
+                showMessage('✅ All test data has been cleared! You can now start fresh with the new upload system.', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+            } catch (error) {
+                showMessage(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

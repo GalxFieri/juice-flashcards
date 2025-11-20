@@ -100,6 +100,18 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        /**
+         * Hash PIN using SHA-256 for secure storage
+         */
+        async function hashPin(pin) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(pin);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
         window.createMasterAdmin = async function() {
             const btn = document.getElementById('createAdminBtn');
             const statusDiv = document.getElementById('status');
@@ -110,12 +122,15 @@
             statusDiv.style.display = 'block';
 
             try {
+                // Hash the PIN before storing
+                const pinHash = await hashPin('0000');
+
                 // Create the master admin account in Firestore
                 const adminRef = doc(db, 'users', 'admin');
 
                 await setDoc(adminRef, {
                     username: 'admin',
-                    pin: '0000',
+                    pinHash: pinHash,  // Store hashed PIN for security
                     isAdmin: true,
                     createdAt: new Date().toISOString(),
                     isActive: true
