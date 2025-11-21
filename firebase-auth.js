@@ -1102,7 +1102,8 @@ async function getCardSets() {
                 description: data.description,
                 cardCount: data.cardCount,
                 createdAt: data.createdAt,
-                uploadedBy: data.uploadedBy
+                uploadedBy: data.uploadedBy,
+                cards: data.cards || []  // Include cards array
             });
         });
 
