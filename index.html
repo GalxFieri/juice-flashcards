@@ -347,9 +347,15 @@
             opacity: 0;
         }
 
-        /* Ensure back card is visible when flipped */
+        /* Ensure back card is visible and on top when flipped */
         .flip-card.flipped .flip-card-back {
             opacity: 1;
+            z-index: 3;
+        }
+
+        /* Move front card behind when flipped */
+        .flip-card.flipped .flip-card-front {
+            z-index: 0;
         }
 
         /* Fade out front content during flip */
