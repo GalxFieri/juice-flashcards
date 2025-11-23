@@ -1144,6 +1144,199 @@ async function deleteCardSet(setId) {
     }
 }
 
+/**
+ * Update a single card within a card set
+ * @param {string} setId - ID of the card set
+ * @param {string} cardId - ID of the card to update
+ * @param {object} updatedCard - Updated card data { question, answer, category, tags, difficulty }
+ * @returns {object} - { success: boolean, message: string }
+ */
+async function updateCard(setId, cardId, updatedCard) {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        if (!setId || !cardId) {
+            throw new Error('Card set ID and card ID are required');
+        }
+
+        // Get the card set
+        const cardSetRef = doc(db, 'cardSets', setId);
+        const cardSetDoc = await getDoc(cardSetRef);
+
+        if (!cardSetDoc.exists()) {
+            throw new Error('Card set not found');
+        }
+
+        const cardSetData = cardSetDoc.data();
+        const cards = cardSetData.cards || [];
+
+        // Find and update the card
+        const cardIndex = cards.findIndex(c => c.id === cardId);
+        if (cardIndex === -1) {
+            throw new Error('Card not found in set');
+        }
+
+        // Update the card while preserving fields not being edited
+        cards[cardIndex] = {
+            ...cards[cardIndex],
+            ...updatedCard,
+            id: cardId  // Ensure ID doesn't change
+        };
+
+        // Update the card set with new cards array
+        await updateDoc(cardSetRef, {
+            cards: cards,
+            updatedAt: new Date().toISOString(),
+            cardCount: cards.length
+        });
+
+        console.log('Card updated:', { setId, cardId });
+        return {
+            success: true,
+            message: `Card updated successfully`
+        };
+    } catch (error) {
+        console.error('Error updating card:', error);
+        throw error;
+    }
+}
+
+/**
+ * Delete a single card from a card set
+ * @param {string} setId - ID of the card set
+ * @param {string} cardId - ID of the card to delete
+ * @returns {object} - { success: boolean, message: string }
+ */
+async function deleteCard(setId, cardId) {
+    try {
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+
+        if (!setId || !cardId) {
+            throw new Error('Card set ID and card ID are required');
+        }
+
+        // Get the card set
+        const cardSetRef = doc(db, 'cardSets', setId);
+        const cardSetDoc = await getDoc(cardSetRef);
+
+        if (!cardSetDoc.exists()) {
+            throw new Error('Card set not found');
+        }
+
+        const cardSetData = cardSetDoc.data();
+        let cards = cardSetData.cards || [];
+
+        // Filter out the card to delete
+        const initialLength = cards.length;
+        cards = cards.filter(c => c.id !== cardId);
+
+        if (cards.length === initialLength) {
+            throw new Error('Card not found in set');
+        }
+
+        // Update the card set with new cards array
+        await updateDoc(cardSetRef, {
+            cards: cards,
+            updatedAt: new Date().toISOString(),
+            cardCount: cards.length
+        });
+
+        console.log('Card deleted:', { setId, cardId });
+        return {
+            success: true,
+            message: `Card deleted successfully`
+        };
+    } catch (error) {
+        console.error('Error deleting card:', error);
+        throw error;
+    }
+}
+
+/**
+ * Admin Navigation State Management
+ * Handles back button navigation with state preservation
+ */
+
+// Store the admin navigation stack in sessionStorage
+function saveAdminNavigationState(pageName, state = {}) {
+    try {
+        let navStack = JSON.parse(sessionStorage.getItem('adminNavStack') || '[]');
+        navStack.push({
+            page: pageName,
+            state: state,
+            timestamp: new Date().getTime()
+        });
+        sessionStorage.setItem('adminNavStack', JSON.stringify(navStack));
+    } catch (error) {
+        console.error('Error saving navigation state:', error);
+    }
+}
+
+// Get the previous page and state from navigation stack
+function getAdminPreviousPage() {
+    try {
+        let navStack = JSON.parse(sessionStorage.getItem('adminNavStack') || '[]');
+        if (navStack.length > 1) {
+            navStack.pop(); // Remove current page
+            const prev = navStack[navStack.length - 1];
+            sessionStorage.setItem('adminNavStack', JSON.stringify(navStack));
+            return prev;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error getting previous page:', error);
+        return null;
+    }
+}
+
+// Clear the navigation stack (called on logout)
+function clearAdminNavigationStack() {
+    try {
+        sessionStorage.removeItem('adminNavStack');
+    } catch (error) {
+        console.error('Error clearing navigation stack:', error);
+    }
+}
+
+// Save page scroll position
+function savePageScrollState(pageName) {
+    try {
+        const adminContent = document.querySelector('.admin-content');
+        if (adminContent) {
+            const scrollState = {
+                scrollTop: adminContent.scrollTop,
+                scrollLeft: adminContent.scrollLeft
+            };
+            sessionStorage.setItem(`adminScroll_${pageName}`, JSON.stringify(scrollState));
+        }
+    } catch (error) {
+        console.error('Error saving scroll state:', error);
+    }
+}
+
+// Restore page scroll position
+function restorePageScrollState(pageName) {
+    try {
+        const scrollState = sessionStorage.getItem(`adminScroll_${pageName}`);
+        if (scrollState) {
+            const state = JSON.parse(scrollState);
+            const adminContent = document.querySelector('.admin-content');
+            if (adminContent) {
+                setTimeout(() => {
+                    adminContent.scrollTop = state.scrollTop;
+                    adminContent.scrollLeft = state.scrollLeft;
+                }, 0);
+            }
+        }
+    } catch (error) {
+        console.error('Error restoring scroll state:', error);
+    }
+}
+
 // Export functions for use in index.html
 window.JuiceAuth = {
     initializeFirebase,
@@ -1170,8 +1363,15 @@ window.JuiceAuth = {
     saveCardSet,
     getCardSets,
     deleteCardSet,
+    updateCard,
+    deleteCard,
     getCategories,
     saveCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    saveAdminNavigationState,
+    getAdminPreviousPage,
+    clearAdminNavigationStack,
+    savePageScrollState,
+    restorePageScrollState
 };
