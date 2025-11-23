@@ -3775,15 +3775,6 @@
 
                 const card = this.cards[this.currentCardIndex];
 
-                // Validate card has cloze text
-                const cardText = card.text || card.question || '';
-                if (!cardText) {
-                    console.error('Card missing text/question:', card);
-                    alert('Error: Card has no question text. Skipping to next card.');
-                    this.nextCard();
-                    return;
-                }
-
                 // Remove animation classes and reset to initial state
                 this.flipCard.classList.remove('flipped', 'unflipped');
 
@@ -3795,9 +3786,9 @@
                 this.comparisonSection.classList.remove('show');
 
                 // Render front card
-                this.renderClozeText(cardText, this.frontCloze, true);
+                this.renderClozeText(card.text, this.frontCloze, true);
                 // Render back card
-                this.renderClozeText(cardText, this.backCloze, false);
+                this.renderClozeText(card.text, this.backCloze, false);
 
                 // Scroll card into view
                 setTimeout(() => {
@@ -3809,13 +3800,6 @@
             }
 
             renderClozeText(text, element, isFront) {
-                // Ensure text is a string
-                if (!text || typeof text !== 'string') {
-                    console.warn('renderClozeText called with invalid text:', text);
-                    element.innerHTML = '<span style="color: rgba(255,255,255,0.7);">No content</span>';
-                    return;
-                }
-
                 let processed = text;
                 let firstAnswer = '';
 
