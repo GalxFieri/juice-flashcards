@@ -3787,6 +3787,8 @@
                         const option = document.createElement('option');
                         option.value = category.categoryId;
                         option.textContent = category.name;
+                        // Store the friendly name as a data attribute for later use
+                        option.dataset.friendlyName = category.name;
                         dropdown.appendChild(option);
                     });
 
@@ -5311,11 +5313,16 @@
                     return;
                 }
 
-                const category = document.getElementById('card-category').value;
-                if (!category) {
+                const categorySelect = document.getElementById('card-category');
+                const categoryId = categorySelect.value;
+                if (!categoryId) {
                     alert('Please select a product category');
                     return;
                 }
+
+                // Get the friendly name from the selected option's data attribute
+                const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+                const categoryName = selectedOption.dataset.friendlyName || selectedOption.textContent;
 
                 const statusDiv = document.getElementById('upload-status');
                 statusDiv.textContent = 'Uploading cards to Firestore...';
@@ -5328,14 +5335,14 @@
                         throw new Error('No active session - please login first');
                     }
 
-                    // Create set ID from category (lowercase, replace spaces with hyphens)
-                    const setId = category.toLowerCase().replace(/\s+/g, '-');
+                    // Create set ID from categoryId (which is already hyphenated)
+                    const setId = categoryId;
 
                     // Prepare card set data
                     const setData = {
-                        name: category,  // Display name
-                        category: category,  // Category for filtering
-                        description: `Flashcards for ${category}`,
+                        name: categoryName,  // Display name (friendly)
+                        category: categoryName,  // Category for filtering
+                        description: `Flashcards for ${categoryName}`,
                         format: this.uploadedCSVValidation.format || 'cloze',  // Card format (cloze or reverse)
                         cards: this.uploadedCSVValidation.data,  // Array of validated cards
                         uploadedBy: session.username  // Track which admin uploaded
