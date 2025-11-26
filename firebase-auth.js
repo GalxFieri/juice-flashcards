@@ -1051,11 +1051,19 @@ async function saveCardSet(setId, setData) {
             throw new Error('Invalid card set data: missing name or cards array');
         }
 
+        // Validate format field
+        const validFormats = ['cloze', 'reverse'];
+        const format = setData.format || 'cloze'; // Default to cloze for backward compatibility
+        if (!validFormats.includes(format)) {
+            throw new Error(`Invalid format: ${format}. Must be 'cloze' or 'reverse'`);
+        }
+
         // Create card set document
         const cardSetRef = doc(db, 'cardSets', setId);
 
         const cardSetDoc = {
             name: setData.name,
+            format: format,
             category: setData.category || 'uncategorized',
             description: setData.description || '',
             cardCount: setData.cards.length,
@@ -1081,23 +1089,60 @@ async function saveCardSet(setId, setData) {
 
 /**
  * Get all available card sets
- * @returns {array} - Array of card set objects: { setId, name, category, description, cardCount, createdAt }
+ * @returns {array} - Array of card set objects: { setId, name, format, category, description, cardCount, createdAt }
  */
 async function getCardSets() {
     try {
         if (!db) {
-            throw new Error('Firebase not initialized');
+            console.warn('Firebase not initialized, attempting fallback to localStorage');
+            return getCardSetsFromLocalStorage();
         }
 
         const cardSetsRef = collection(db, 'cardSets');
         const querySnapshot = await getDocs(cardSetsRef);
 
+        // Friendly name mapping for known card set IDs
+        const friendlyNames = {
+            'fifty-bar-20k': 'Fifty Bar 20K',
+            'fifty-bar-2-0': 'Fifty Bar 2.0',
+            'geek-bar-pulse-x': 'Geek Bar Pulse X',
+            'geek-bar-pulse': 'Geek Bar Pulse',
+            'geek-bar-pulse-pulse-x': 'Geek Bar Pulse X',
+            'lost-mary-15k': 'Lost Mary 15K',
+            'lost-mary-20k': 'Lost Mary 20K',
+            'lost-mary-35k': 'Lost Mary 35K',
+            'lost-mary-weekly-edition': 'Lost Mary Weekly Edition',
+            'lost-mary-off-stamp': 'Lost Mary Off Stamp',
+            'raz-25k-9k': 'Raz 25K/9K',
+            'raz-disposable-vape': 'Raz Disposable Vape',
+            'ejuice': 'eJuice',
+            'disposable-vapes': 'Disposable Vapes',
+            'pod-systems': 'Pod Systems',
+            'accessories': 'Accessories'
+        };
+
         const cardSets = [];
         querySnapshot.forEach((docSnapshot) => {
             const data = docSnapshot.data();
+            const docId = docSnapshot.id;
+
+            // Get display name with fallback logic
+            let displayName = data.name || '';
+
+            // If name looks like a hyphenated ID (all lowercase with hyphens/numbers), use friendly name mapping
+            if (displayName && /^[a-z0-9-]+$/.test(displayName)) {
+                displayName = friendlyNames[displayName] || friendlyNames[docId] || displayName;
+            }
+
+            // Final fallback to friendly name mapping using document ID
+            if (!displayName || /^[a-z0-9-]+$/.test(displayName)) {
+                displayName = friendlyNames[docId] || displayName || docId;
+            }
+
             cardSets.push({
-                setId: docSnapshot.id,
-                name: data.name,
+                id: docId,
+                name: displayName,
+                format: data.format || 'cloze',  // Default to cloze for legacy data
                 category: data.category,
                 description: data.description,
                 cardCount: data.cardCount,
@@ -1107,11 +1152,92 @@ async function getCardSets() {
             });
         });
 
-        console.log('Card sets loaded:', cardSets.length);
+        console.log('Card sets loaded from Firestore:', cardSets.length, cardSets);
         return cardSets;
     } catch (error) {
-        console.error('Error loading card sets:', error);
-        throw error;
+        console.error('Error loading card sets from Firestore:', error);
+        console.warn('Falling back to localStorage');
+        return getCardSetsFromLocalStorage();
+    }
+}
+
+/**
+ * Get card sets from localStorage (offline/local testing fallback)
+ */
+function getCardSetsFromLocalStorage() {
+    try {
+        const cardSets = [];
+
+        // Friendly name mapping for known card set IDs
+        const friendlyNames = {
+            'fifty-bar-20k': 'Fifty Bar 20K',
+            'fifty-bar-2-0': 'Fifty Bar 2.0',
+            'geek-bar-pulse-x': 'Geek Bar Pulse X',
+            'geek-bar-pulse': 'Geek Bar Pulse',
+            'geek-bar-pulse-pulse-x': 'Geek Bar Pulse X',
+            'lost-mary-15k': 'Lost Mary 15K',
+            'lost-mary-20k': 'Lost Mary 20K',
+            'lost-mary-35k': 'Lost Mary 35K',
+            'lost-mary-weekly-edition': 'Lost Mary Weekly Edition',
+            'lost-mary-off-stamp': 'Lost Mary Off Stamp',
+            'raz-25k-9k': 'Raz 25K/9K',
+            'raz-disposable-vape': 'Raz Disposable Vape',
+            'ejuice': 'eJuice',
+            'disposable-vapes': 'Disposable Vapes',
+            'pod-systems': 'Pod Systems',
+            'accessories': 'Accessories'
+        };
+
+        // Look for card sets stored with various key patterns
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+
+            // Check if this looks like a card set entry
+            if (key && (key.includes('card') || key.includes('fifty-bar') || key.includes('geek-bar') || key.includes('lost-mary') || key.includes('raz-') || key.includes('offf-stamp'))) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+
+                    // Check if it looks like a card set (has cards array or name)
+                    if (data && (data.cards || data.name)) {
+                        // Extract a reasonable ID from the key or data
+                        const id = data.id || data.setId || key.replace(/^.*_/, '');
+
+                        // Get display name with fallback logic
+                        let displayName = data.name || data.categoryName || '';
+
+                        // If name looks like a hyphenated ID (all lowercase with hyphens/numbers), use friendly name mapping
+                        if (displayName && /^[a-z0-9-]+$/.test(displayName)) {
+                            displayName = friendlyNames[displayName] || displayName;
+                        }
+
+                        // Final fallback to ID
+                        if (!displayName) {
+                            displayName = friendlyNames[id] || id;
+                        }
+
+                        cardSets.push({
+                            id: id,
+                            name: displayName,
+                            format: data.format || 'cloze',
+                            category: data.category,
+                            description: data.description,
+                            cardCount: (data.cards && data.cards.length) || data.cardCount || 0,
+                            createdAt: data.createdAt,
+                            uploadedBy: data.uploadedBy,
+                            cards: data.cards || []
+                        });
+                    }
+                } catch (e) {
+                    // Not valid JSON or not a card set, skip
+                }
+            }
+        }
+
+        console.log('Card sets loaded from localStorage:', cardSets.length, cardSets);
+        return cardSets;
+    } catch (error) {
+        console.error('Error loading card sets from localStorage:', error);
+        return [];
     }
 }
 

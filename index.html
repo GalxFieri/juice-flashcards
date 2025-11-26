@@ -2254,6 +2254,17 @@
                                 <span class="close-modal">&times;</span>
                                 <h2>Upload Card File</h2>
 
+                                <!-- Format Selector (ALWAYS VISIBLE) -->
+                                <div id="format-selector-container" style="display: block !important; visibility: visible !important; margin-top: 15px !important; margin-bottom: 20px !important; padding: 15px !important; background: rgba(255,215,0,0.15) !important; border: 3px solid #FFD700 !important; border-radius: 8px !important;">
+                                    <label for="csv-format-selector" style="font-weight: bold !important; color: #FFD700 !important; display: block !important; margin-bottom: 10px !important; font-size: 16px !important;">📋 CARD FORMAT (IMPORTANT):</label>
+                                    <select id="csv-format-selector" style="display: block !important; width: 100% !important; margin-top: 8px !important; padding: 12px !important; font-weight: bold !important; font-size: 14px !important; border: 2px solid #FFD700 !important; background-color: white !important; color: black !important;">
+                                        <option value="auto" selected>⚙️ Auto-detect Format</option>
+                                        <option value="cloze">📝 Cloze (Traditional Fill-in-the-Blank)</option>
+                                        <option value="reverse">🔄 Reverse (Question → Answer) - USE THIS FOR VAPE CARDS!</option>
+                                    </select>
+                                    <small style="color: #333 !important; font-size: 12px !important; display: block !important; margin-top: 8px !important;">⚠️ FOR DISPOSABLE VAPE CARDS: SELECT "🔄 Reverse" BEFORE CLICKING VALIDATE!</small>
+                                </div>
+
                                 <!-- File Selection -->
                                 <div id="file-selection-step" class="upload-step">
                                     <h3>Step 1: Select CSV File</h3>
@@ -2334,29 +2345,67 @@
                                     </div>
                                 </div>
 
-                                <!-- Card Question Editor -->
-                                <div class="form-group">
-                                    <label for="edit-card-question">Question (with fill-in-the-blank fields):</label>
-                                    <textarea id="edit-card-question" class="form-control" placeholder="e.g., The flavor is {{c1::Blueberry}} from {{c2::Japan}}" rows="3" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; font-family: inherit;"></textarea>
-                                    <small style="color: rgba(255,255,255,0.7);">Use format: {{c1::answer}}, {{c2::answer}}, etc. (2-5 fields required)</small>
-                                    <div id="cloze-errors" style="margin-top: 8px;"></div>
+                                <!-- Format Indicator -->
+                                <div id="edit-format-indicator" style="margin-bottom: 20px; padding: 10px; background: rgba(100,149,237,0.2); border-left: 3px solid #6495ED; border-radius: 4px;">
+                                    <strong style="color: #FFD700;">Format:</strong> <span id="edit-format-name">Unknown</span>
                                 </div>
 
-                                <!-- Cloze Fields Editor -->
-                                <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                                    <h3 style="margin-top: 0; margin-bottom: 15px; color: #FFD700;">Fill-in-the-Blank Fields</h3>
-                                    <div id="cloze-fields-list" style="display: none;">
-                                        <!-- Cloze fields will be rendered here -->
+                                <!-- CLOZE FORMAT FIELDS -->
+                                <div id="cloze-edit-section" style="display: none;">
+                                    <!-- Card Question Editor -->
+                                    <div class="form-group">
+                                        <label for="edit-card-question">Question (with fill-in-the-blank fields):</label>
+                                        <textarea id="edit-card-question" class="form-control" placeholder="e.g., The flavor is {{c1::Blueberry}} from {{c2::Japan}}" rows="3" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; font-family: inherit;"></textarea>
+                                        <small style="color: rgba(255,255,255,0.7);">Use format: {{c1::answer}}, {{c2::answer}}, etc. (2-5 fields required)</small>
+                                        <div id="cloze-errors" style="margin-top: 8px;"></div>
                                     </div>
-                                    <div id="no-cloze-fields" style="color: rgba(255,255,255,0.6); padding: 15px; text-align: center; background: rgba(255,255,255,0.05); border-radius: 6px;">
-                                        <p>No cloze fields detected in question</p>
+
+                                    <!-- Cloze Fields Editor -->
+                                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                        <h3 style="margin-top: 0; margin-bottom: 15px; color: #FFD700;">Fill-in-the-Blank Fields</h3>
+                                        <div id="cloze-fields-list" style="display: none;">
+                                            <!-- Cloze fields will be rendered here -->
+                                        </div>
+                                        <div id="no-cloze-fields" style="color: rgba(255,255,255,0.6); padding: 15px; text-align: center; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                                            <p>No cloze fields detected in question</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card Answer -->
+                                    <div class="form-group">
+                                        <label for="edit-card-answer">Answer/Back (Optional):</label>
+                                        <input type="text" id="edit-card-answer" class="form-control" placeholder="e.g., Blue Raspberry Flavor from Asia" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; font-family: inherit;">
                                     </div>
                                 </div>
 
-                                <!-- Card Answer -->
-                                <div class="form-group">
-                                    <label for="edit-card-answer">Answer/Back (Optional):</label>
-                                    <input type="text" id="edit-card-answer" class="form-control" placeholder="e.g., Blue Raspberry Flavor from Asia" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; font-family: inherit;">
+                                <!-- REVERSE FORMAT FIELDS -->
+                                <div id="reverse-edit-section" style="display: none;">
+                                    <!-- Question Characteristic -->
+                                    <div class="form-group">
+                                        <label for="edit-question-characteristic">📝 Characteristic Clues Question:</label>
+                                        <textarea id="edit-question-characteristic" class="form-control" placeholder="Name the flavor with: Sweet berry notes with creamy undertones" rows="3" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; font-family: inherit;"></textarea>
+                                        <small style="color: rgba(255,255,255,0.7);">Descriptive question without mentioning the answer or specific ingredient names</small>
+                                    </div>
+
+                                    <!-- Question Customer -->
+                                    <div class="form-group">
+                                        <label for="edit-question-customer">🛒 Customer Request Question:</label>
+                                        <textarea id="edit-question-customer" class="form-control" placeholder="Customer wants 'something fruity and creamy'. Which flavor?" rows="3" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; font-family: inherit;"></textarea>
+                                        <small style="color: rgba(255,255,255,0.7);">Real-world sales scenario question</small>
+                                    </div>
+
+                                    <!-- Answer -->
+                                    <div class="form-group">
+                                        <label for="edit-reverse-answer">Answer:</label>
+                                        <input type="text" id="edit-reverse-answer" class="form-control" placeholder="e.g., Blueberry Yogurt" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; font-family: inherit;">
+                                    </div>
+
+                                    <!-- Ingredients -->
+                                    <div class="form-group">
+                                        <label for="edit-ingredients">Flavor Profile/Ingredients:</label>
+                                        <input type="text" id="edit-ingredients" class="form-control" placeholder="e.g., blueberry, creamy yogurt" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; font-family: inherit;">
+                                        <small style="color: rgba(255,255,255,0.7);">Comma-separated list of flavor notes</small>
+                                    </div>
                                 </div>
 
                                 <!-- Card Category -->
@@ -2808,6 +2857,27 @@
                 const editCardQuestionInput = document.getElementById('edit-card-question');
                 if (editCardQuestionInput) {
                     editCardQuestionInput.addEventListener('input', () => this.updateCardPreview());
+                }
+
+                // Reverse format field listeners
+                const editQuestionCharacteristic = document.getElementById('edit-question-characteristic');
+                if (editQuestionCharacteristic) {
+                    editQuestionCharacteristic.addEventListener('input', () => this.updateCardPreview());
+                }
+
+                const editQuestionCustomer = document.getElementById('edit-question-customer');
+                if (editQuestionCustomer) {
+                    editQuestionCustomer.addEventListener('input', () => this.updateCardPreview());
+                }
+
+                const editReverseAnswer = document.getElementById('edit-reverse-answer');
+                if (editReverseAnswer) {
+                    editReverseAnswer.addEventListener('input', () => this.updateCardPreview());
+                }
+
+                const editIngredients = document.getElementById('edit-ingredients');
+                if (editIngredients) {
+                    editIngredients.addEventListener('input', () => this.updateCardPreview());
                 }
 
                 const saveCardBtn = document.getElementById('save-card-btn');
@@ -3323,14 +3393,20 @@
 
                     if (!selector) return;
 
+                    // Debug: Log the structure of card sets
+                    console.log('Card sets structure:', cardSets[0]);
+
                     // Clear existing options
                     selector.innerHTML = '<option value="">-- Select Study Material --</option>';
 
                     // Add each card set as an option
                     cardSets.forEach(set => {
                         const option = document.createElement('option');
-                        option.value = set.setId;
-                        option.textContent = `${set.name} (${set.cardCount} cards)`;
+                        // Try both 'id' and 'setId' for compatibility
+                        option.value = set.id || set.setId;
+                        // Try both 'name' and 'categoryName' for compatibility
+                        const displayName = set.name || set.categoryName || set.id || set.setId;
+                        option.textContent = `${displayName} (${set.cardCount} cards)`;
                         selector.appendChild(option);
                     });
 
@@ -3369,23 +3445,33 @@
                     const cardSets = await window.JuiceAuth.getCardSets();
                     console.log(`Available card sets: ${cardSets.length}`, cardSets);
 
-                    const selectedSet = cardSets.find(s => s.setId === setId);
+                    // Try finding by 'id' first, then 'setId' for compatibility
+                    const selectedSet = cardSets.find(s => (s.id || s.setId) === setId);
 
                     if (selectedSet) {
-                        console.log(`Found card set: ${selectedSet.name} (${selectedSet.cardCount} cards)`);
-                        // Use the cards from this set
+                        console.log(`Found card set: ${selectedSet.name} (${selectedSet.cardCount} cards, format: ${selectedSet.format})`);
+
+                        // Store the card set metadata (including format)
+                        this.currentCardSet = {
+                            id: selectedSet.id,
+                            name: selectedSet.name,
+                            format: selectedSet.format || 'cloze',  // Default to cloze for legacy data
+                            category: selectedSet.category
+                        };
+
+                        // Use the cards from this set - store raw card data
                         this.cards = selectedSet.cards.map(card => ({
                             id: card.id,
-                            text: card.question,  // Store question as 'text' for cloze processing
-                            answer: card.answer,
-                            category: card.category,
-                            tags: card.tags,
+                            // For cloze format: keep 'question' field
+                            // For reverse format: keep both question types
+                            ...card,  // Spread all card fields
+                            text: card.question,  // Backward compatibility for cloze
                             difficulty: card.difficulty || 'Medium'
                         }));
 
-                        console.log(`Loaded ${this.cards.length} cards from "${selectedSet.name}"`);
+                        console.log(`Loaded ${this.cards.length} cards from "${selectedSet.name}" (${this.currentCardSet.format} format)`);
                     } else {
-                        console.warn(`Card set "${setId}" not found in Firestore. Available sets:`, cardSets.map(s => s.setId));
+                        console.warn(`Card set "${setId}" not found in Firestore. Available sets:`, cardSets.map(s => s.id));
                     }
                 } catch (error) {
                     console.error('Error loading card set:', error);
@@ -3424,7 +3510,7 @@
                     } else {
                         cardSets.forEach(set => {
                             const option = document.createElement('option');
-                            option.value = set.setId;
+                            option.value = set.id;
                             option.textContent = `${set.name} (${set.cardCount} cards)`;
                             dropdown.appendChild(option);
                         });
@@ -3783,7 +3869,10 @@
 
                 const card = this.cards[this.currentCardIndex];
                 console.log('Displaying card:', card);
-                console.log('Card text value:', card.text);
+
+                // Check card format (default to cloze if not specified)
+                const format = this.currentCardSet ? this.currentCardSet.format : 'cloze';
+                console.log('Card format:', format);
 
                 // Remove animation classes and reset to initial state
                 this.flipCard.classList.remove('flipped', 'unflipped');
@@ -3795,10 +3884,13 @@
                 this.userAnswerInput.value = '';
                 this.comparisonSection.classList.remove('show');
 
-                // Render front card
-                this.renderClozeText(card.text, this.frontCloze, true);
-                // Render back card
-                this.renderClozeText(card.text, this.backCloze, false);
+                // Render card based on format
+                if (format === 'reverse') {
+                    this.displayReverseCard(card);
+                } else {
+                    // Cloze format (default)
+                    this.displayClozeCard(card);
+                }
 
                 // Scroll card into view
                 setTimeout(() => {
@@ -3807,6 +3899,39 @@
 
                 // Focus input for next answer
                 this.userAnswerInput.focus();
+            }
+
+            displayClozeCard(card) {
+                console.log('Displaying cloze card - text:', card.text);
+
+                // Render front card
+                this.renderClozeText(card.text, this.frontCloze, true);
+                // Render back card
+                this.renderClozeText(card.text, this.backCloze, false);
+            }
+
+            displayReverseCard(card) {
+                // Randomly pick between characteristic and customer question
+                const questionType = Math.random() < 0.5 ? 'characteristic' : 'customer';
+                this.currentQuestionType = questionType;
+
+                const questionField = `question_${questionType}`;
+                const question = card[questionField];
+
+                console.log(`Displaying reverse card - type: ${questionType}, question: ${question}`);
+
+                // Front: Show question only
+                this.frontCloze.innerHTML = `<p style="font-size: 1.2rem; line-height: 1.6;">${question}</p>`;
+
+                // Back: Show answer + ingredients
+                const ingredients = card.ingredients || '';
+                this.backCloze.innerHTML = `
+                    <h2 style="color: #4CAF50; margin-bottom: 15px;">${card.answer}</h2>
+                    ${ingredients ? `<p style="font-size: 1rem; color: #666; margin-top: 10px;"><strong>Flavor Profile:</strong> ${ingredients}</p>` : ''}
+                `;
+
+                // Store answer for validation
+                this.currentCardAnswer = card.answer;
             }
 
             renderClozeText(text, element, isFront) {
@@ -3998,7 +4123,22 @@
             }
 
             updateFooter() {
-                this.currentProfileDisplay.textContent = `Profile: ${this.currentProfile.name}`;
+                // Base profile info
+                let profileText = `Profile: ${this.currentProfile.name}`;
+
+                // Add card set name
+                if (this.currentCardSet && this.currentCardSet.name) {
+                    profileText += ` • 📚 ${this.currentCardSet.name}`;
+                }
+
+                // Add question type indicator for reverse format cards
+                if (this.currentCardSet && this.currentCardSet.format === 'reverse' && this.currentQuestionType) {
+                    const typeIcon = this.currentQuestionType === 'customer' ? '🛒' : '📝';
+                    const typeName = this.currentQuestionType === 'customer' ? 'Customer Request' : 'Characteristic Clues';
+                    profileText += ` • ${typeIcon} ${typeName}`;
+                }
+
+                this.currentProfileDisplay.textContent = profileText;
                 this.currentLevelDisplay.textContent = this.currentProfile.currentLevel;
                 this.currentXpDisplay.textContent = `${this.currentProfile.xp} XP`;
             }
@@ -4384,7 +4524,7 @@
 
                     cardSets.forEach(set => {
                         const option = document.createElement('option');
-                        option.value = set.setId;
+                        option.value = set.id;
                         option.textContent = `${set.name} (${set.cardCount || 0} cards)`;
                         selector.appendChild(option);
                     });
@@ -4408,7 +4548,7 @@
 
                 try {
                     const cardSets = await window.JuiceAuth.getCardSets();
-                    const selectedSet = cardSets.find(s => s.setId === setId);
+                    const selectedSet = cardSets.find(s => s.id === setId);
 
                     if (!selectedSet || !selectedSet.cards) {
                         cardsList.innerHTML = '<div style="padding: 20px; text-align: center; color: rgba(255,255,255,0.6);">No cards in this set</div>';
@@ -4420,6 +4560,7 @@
                     }
 
                     this.currentEditingSetId = setId;
+                    this.currentEditingSetFormat = selectedSet.format || 'cloze'; // Store format for edit modal
                     this.renderCardsList(selectedSet.cards);
                     container.style.display = 'block';
 
@@ -4441,16 +4582,36 @@
                 const cardsList = document.getElementById('cards-list');
                 cardsList.innerHTML = '';
 
+                // Determine format from card set
+                const format = this.currentEditingSetFormat ||
+                              (cards.length > 0 && cards[0].question_characteristic ? 'reverse' : 'cloze');
+
                 cards.forEach((card, index) => {
                     const cardEl = document.createElement('div');
                     cardEl.style.cssText = 'padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;';
 
+                    // Determine card preview text based on format
+                    let previewText = '';
+                    if (format === 'reverse') {
+                        previewText = card.answer || card.question_characteristic || 'No answer';
+                    } else {
+                        previewText = card.question || card.text || 'No question';
+                    }
+
+                    // Format badge
+                    const formatIcon = format === 'cloze' ? '📝' : '🔄';
+                    const formatColor = format === 'cloze' ? 'rgba(100,149,237,0.3)' : 'rgba(50,205,50,0.3)';
+                    const formatBorderColor = format === 'cloze' ? '#6495ED' : '#32CD32';
+
                     const textEl = document.createElement('div');
                     textEl.style.cssText = 'flex: 1;';
                     textEl.innerHTML = `
-                        <div style="color: white; font-weight: 500; margin-bottom: 4px;">Card ${index + 1}</div>
+                        <div style="color: white; font-weight: 500; margin-bottom: 4px;">
+                            <span style="background: ${formatColor}; border: 1px solid ${formatBorderColor}; padding: 2px 6px; border-radius: 3px; font-size: 12px; margin-right: 8px;">${formatIcon}</span>
+                            Card ${index + 1}
+                        </div>
                         <div style="color: rgba(255,255,255,0.7); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            ${(card.question || card.text || 'No question').substring(0, 60)}...
+                            ${previewText.substring(0, 60)}...
                         </div>
                     `;
 
@@ -4469,9 +4630,40 @@
                 this.currentEditingCard = { ...card };
                 this.currentEditingSetId = setId;
 
-                // Fill form fields
-                document.getElementById('edit-card-question').value = card.question || card.text || '';
-                document.getElementById('edit-card-answer').value = card.answer || '';
+                // Determine format (from card set or detect from card structure)
+                const format = this.currentEditingSetFormat ||
+                              (card.question_characteristic ? 'reverse' : 'cloze');
+
+                // Update format indicator
+                const formatIcon = format === 'cloze' ? '📝' : '🔄';
+                const formatName = format === 'cloze' ? 'Cloze (Fill-in-the-Blank)' : 'Reverse (Question → Answer)';
+                document.getElementById('edit-format-name').textContent = `${formatIcon} ${formatName}`;
+
+                // Show/hide format-specific sections
+                const clozeSection = document.getElementById('cloze-edit-section');
+                const reverseSection = document.getElementById('reverse-edit-section');
+
+                if (format === 'reverse') {
+                    // REVERSE FORMAT
+                    clozeSection.style.display = 'none';
+                    reverseSection.style.display = 'block';
+
+                    // Fill reverse format fields
+                    document.getElementById('edit-question-characteristic').value = card.question_characteristic || '';
+                    document.getElementById('edit-question-customer').value = card.question_customer || '';
+                    document.getElementById('edit-reverse-answer').value = card.answer || '';
+                    document.getElementById('edit-ingredients').value = card.ingredients || '';
+                } else {
+                    // CLOZE FORMAT (default)
+                    clozeSection.style.display = 'block';
+                    reverseSection.style.display = 'none';
+
+                    // Fill cloze format fields
+                    document.getElementById('edit-card-question').value = card.question || card.text || '';
+                    document.getElementById('edit-card-answer').value = card.answer || '';
+                }
+
+                // Fill common fields
                 document.getElementById('edit-card-category').value = card.category || '';
                 document.getElementById('edit-card-tags').value = card.tags || '';
 
@@ -4490,56 +4682,103 @@
             }
 
             updateCardPreview() {
-                const question = document.getElementById('edit-card-question').value;
                 const preview = document.getElementById('card-preview');
-                const errorsEl = document.getElementById('cloze-errors');
-                const clozeFieldsList = document.getElementById('cloze-fields-list');
-                const noClozeFields = document.getElementById('no-cloze-fields');
 
-                if (!question.trim()) {
-                    preview.innerHTML = '<p style="color: rgba(255,255,255,0.7); margin: 0;"><em>Enter a question with fill-in-the-blank fields...</em></p>';
-                    noClozeFields.style.display = 'block';
-                    clozeFieldsList.style.display = 'none';
-                    errorsEl.innerHTML = '';
-                    return;
-                }
+                // Determine format
+                const format = this.currentEditingSetFormat ||
+                              (this.currentEditingCard && this.currentEditingCard.question_characteristic ? 'reverse' : 'cloze');
 
-                // Validate cloze syntax
-                const validation = CSVValidator.validateClozeSyntax(question);
+                if (format === 'reverse') {
+                    // REVERSE FORMAT PREVIEW
+                    const questionChar = document.getElementById('edit-question-characteristic').value;
+                    const questionCust = document.getElementById('edit-question-customer').value;
+                    const answer = document.getElementById('edit-reverse-answer').value;
+                    const ingredients = document.getElementById('edit-ingredients').value;
 
-                if (!validation.valid) {
-                    errorsEl.innerHTML = validation.errors.map(e => `<div style="color: #ff6b6b; font-size: 13px; margin: 4px 0;">⚠ ${e}</div>`).join('');
+                    if (!questionChar.trim() && !questionCust.trim() && !answer.trim()) {
+                        preview.innerHTML = '<p style="color: rgba(255,255,255,0.7); margin: 0;"><em>Fill in the fields to see preview...</em></p>';
+                        return;
+                    }
+
+                    // Show both question types with answer
+                    let previewHtml = '<div style="font-size: 14px;">';
+                    if (questionChar.trim()) {
+                        previewHtml += `<div style="margin-bottom: 15px; padding: 10px; background: rgba(100,149,237,0.2); border-left: 3px solid #6495ED; border-radius: 4px;">
+                            <strong style="color: #FFD700;">📝 Characteristic:</strong><br>
+                            <span style="color: white; margin-top: 5px; display: block;">${questionChar}</span>
+                        </div>`;
+                    }
+                    if (questionCust.trim()) {
+                        previewHtml += `<div style="margin-bottom: 15px; padding: 10px; background: rgba(50,205,50,0.2); border-left: 3px solid #32CD32; border-radius: 4px;">
+                            <strong style="color: #FFD700;">🛒 Customer:</strong><br>
+                            <span style="color: white; margin-top: 5px; display: block;">${questionCust}</span>
+                        </div>`;
+                    }
+                    if (answer.trim()) {
+                        previewHtml += `<div style="margin-top: 15px; padding: 10px; background: rgba(255,215,0,0.3); border: 1px solid rgba(255,215,0,0.5); border-radius: 4px; text-align: center;">
+                            <strong style="color: #FFD700; font-size: 16px;">${answer}</strong>
+                        </div>`;
+                    }
+                    if (ingredients.trim()) {
+                        previewHtml += `<div style="margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.7); text-align: center;">
+                            Ingredients: ${ingredients}
+                        </div>`;
+                    }
+                    previewHtml += '</div>';
+                    preview.innerHTML = previewHtml;
+
                 } else {
-                    errorsEl.innerHTML = '';
+                    // CLOZE FORMAT PREVIEW (existing logic)
+                    const question = document.getElementById('edit-card-question').value;
+                    const errorsEl = document.getElementById('cloze-errors');
+                    const clozeFieldsList = document.getElementById('cloze-fields-list');
+                    const noClozeFields = document.getElementById('no-cloze-fields');
+
+                    if (!question.trim()) {
+                        preview.innerHTML = '<p style="color: rgba(255,255,255,0.7); margin: 0;"><em>Enter a question with fill-in-the-blank fields...</em></p>';
+                        noClozeFields.style.display = 'block';
+                        clozeFieldsList.style.display = 'none';
+                        errorsEl.innerHTML = '';
+                        return;
+                    }
+
+                    // Validate cloze syntax
+                    const validation = CSVValidator.validateClozeSyntax(question);
+
+                    if (!validation.valid) {
+                        errorsEl.innerHTML = validation.errors.map(e => `<div style="color: #ff6b6b; font-size: 13px; margin: 4px 0;">⚠ ${e}</div>`).join('');
+                    } else {
+                        errorsEl.innerHTML = '';
+                    }
+
+                    if (validation.warnings.length > 0) {
+                        errorsEl.innerHTML += validation.warnings.map(w => `<div style="color: #ffc107; font-size: 13px; margin: 4px 0;">ℹ ${w}</div>`).join('');
+                    }
+
+                    // Render cloze fields list
+                    if (validation.fieldCount > 0) {
+                        noClozeFields.style.display = 'none';
+                        clozeFieldsList.style.display = 'block';
+
+                        let html = '<div style="display: flex; flex-wrap: wrap; gap: 8px;">';
+                        validation.fields.forEach(field => {
+                            html += `
+                                <div style="background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.5); padding: 8px 12px; border-radius: 4px; color: white; font-size: 13px;">
+                                    <strong>Blank ${field.number}:</strong> ${field.content}
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        clozeFieldsList.innerHTML = html;
+                    } else {
+                        noClozeFields.style.display = 'block';
+                        clozeFieldsList.style.display = 'none';
+                    }
+
+                    // Show preview
+                    const previewHtml = this.renderClozePreview(question);
+                    preview.innerHTML = previewHtml;
                 }
-
-                if (validation.warnings.length > 0) {
-                    errorsEl.innerHTML += validation.warnings.map(w => `<div style="color: #ffc107; font-size: 13px; margin: 4px 0;">ℹ ${w}</div>`).join('');
-                }
-
-                // Render cloze fields list
-                if (validation.fieldCount > 0) {
-                    noClozeFields.style.display = 'none';
-                    clozeFieldsList.style.display = 'block';
-
-                    let html = '<div style="display: flex; flex-wrap: wrap; gap: 8px;">';
-                    validation.fields.forEach(field => {
-                        html += `
-                            <div style="background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.5); padding: 8px 12px; border-radius: 4px; color: white; font-size: 13px;">
-                                <strong>Blank ${field.number}:</strong> ${field.content}
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    clozeFieldsList.innerHTML = html;
-                } else {
-                    noClozeFields.style.display = 'block';
-                    clozeFieldsList.style.display = 'none';
-                }
-
-                // Show preview
-                const previewHtml = this.renderClozePreview(question);
-                preview.innerHTML = previewHtml;
             }
 
             renderClozePreview(text) {
@@ -4565,33 +4804,69 @@
                     return;
                 }
 
-                const question = document.getElementById('edit-card-question').value.trim();
-                const answer = document.getElementById('edit-card-answer').value.trim();
+                const statusEl = document.getElementById('edit-status');
                 const category = document.getElementById('edit-card-category').value.trim();
                 const tags = document.getElementById('edit-card-tags').value.trim();
-                const statusEl = document.getElementById('edit-status');
 
-                if (!question) {
-                    statusEl.innerHTML = '<span style="color: #ff6b6b;">Question is required</span>';
-                    return;
-                }
+                // Determine format
+                const format = this.currentEditingSetFormat ||
+                              (this.currentEditingCard.question_characteristic ? 'reverse' : 'cloze');
 
-                // Validate cloze syntax
-                const validation = CSVValidator.validateClozeSyntax(question);
-                if (!validation.valid) {
-                    statusEl.innerHTML = `<span style="color: #ff6b6b;">Invalid question format: ${validation.errors[0]}</span>`;
-                    return;
-                }
+                let updatedCard = {};
 
-                try {
-                    statusEl.innerHTML = '<span style="color: rgba(255,255,255,0.7);">Saving...</span>';
+                if (format === 'reverse') {
+                    // REVERSE FORMAT VALIDATION & SAVE
+                    const questionChar = document.getElementById('edit-question-characteristic').value.trim();
+                    const questionCust = document.getElementById('edit-question-customer').value.trim();
+                    const answer = document.getElementById('edit-reverse-answer').value.trim();
+                    const ingredients = document.getElementById('edit-ingredients').value.trim();
 
-                    const updatedCard = {
+                    // Validation
+                    if (!questionChar || !questionCust) {
+                        statusEl.innerHTML = '<span style="color: #ff6b6b;">Both question types are required</span>';
+                        return;
+                    }
+                    if (!answer) {
+                        statusEl.innerHTML = '<span style="color: #ff6b6b;">Answer is required</span>';
+                        return;
+                    }
+
+                    updatedCard = {
+                        question_characteristic: questionChar,
+                        question_customer: questionCust,
+                        answer: answer,
+                        ingredients: ingredients,
+                        category: category,
+                        tags: tags
+                    };
+
+                } else {
+                    // CLOZE FORMAT VALIDATION & SAVE
+                    const question = document.getElementById('edit-card-question').value.trim();
+                    const answer = document.getElementById('edit-card-answer').value.trim();
+
+                    if (!question) {
+                        statusEl.innerHTML = '<span style="color: #ff6b6b;">Question is required</span>';
+                        return;
+                    }
+
+                    // Validate cloze syntax
+                    const validation = CSVValidator.validateClozeSyntax(question);
+                    if (!validation.valid) {
+                        statusEl.innerHTML = `<span style="color: #ff6b6b;">Invalid question format: ${validation.errors[0]}</span>`;
+                        return;
+                    }
+
+                    updatedCard = {
                         question: question,
                         answer: answer,
                         category: category,
                         tags: tags
                     };
+                }
+
+                try {
+                    statusEl.innerHTML = '<span style="color: rgba(255,255,255,0.7);">Saving...</span>';
 
                     const result = await window.JuiceAuth.updateCard(
                         this.currentEditingSetId,
@@ -4657,7 +4932,7 @@
                 try {
                     // Get the card set details to show in confirmation
                     const cardSets = await window.JuiceAuth.getCardSets();
-                    const selectedSet = cardSets.find(s => s.setId === setId);
+                    const selectedSet = cardSets.find(s => s.id === setId);
 
                     if (!selectedSet) {
                         alert('Card set not found');
@@ -4886,6 +5161,9 @@
                     document.getElementById('upload-cards-confirm-btn').style.display = 'none';
                     document.getElementById('upload-status').textContent = '';
                     document.getElementById('upload-status').className = '';
+                    // Clear old validation messages and preview
+                    document.getElementById('validation-messages').innerHTML = '';
+                    document.getElementById('csv-preview').innerHTML = '';
                 }
             }
 
@@ -4925,10 +5203,19 @@
             }
 
             showValidationStep() {
+                // Hide file selection step, show validation step
                 document.getElementById('file-selection-step').style.display = 'none';
                 document.getElementById('validation-step').style.display = 'block';
                 document.getElementById('validate-csv-btn').style.display = 'inline-block';
-                this.validateUploadedCSV();
+
+                // Clear validation messages and show helpful message
+                const messagesDiv = document.getElementById('validation-messages');
+                messagesDiv.innerHTML = '<div class="validation-message info" style="background: rgba(100,149,237,0.2) !important; border-left: 3px solid #6495ED !important; padding: 15px !important;"><strong>📋 Format Selector Visible Above</strong><br>Select your card format from the dropdown above, then click "Validate CSV" to proceed.</div>';
+
+                // Clear preview
+                document.getElementById('csv-preview').innerHTML = '';
+
+                // DO NOT auto-validate - wait for user to select format and click "Validate CSV" button
             }
 
             validateUploadedCSV() {
@@ -4937,13 +5224,29 @@
                     return;
                 }
 
-                // Validate using CSVValidator module
-                const validation = CSVValidator.validateCSV(this.uploadedCSVContent);
+                // Get selected format from dropdown
+                const formatSelector = document.getElementById('csv-format-selector');
+                const selectedFormat = formatSelector ? formatSelector.value : 'auto';
+
+                console.log('Starting validation with format:', selectedFormat);
+                // Validate using CSVValidator module with format parameter
+                const validation = CSVValidator.validateCSV(this.uploadedCSVContent, selectedFormat);
+                console.log('Validation complete, result valid:', validation.valid, 'errors:', validation.errors.length);
                 this.uploadedCSVValidation = validation;
 
                 // Display validation messages
                 const messagesDiv = document.getElementById('validation-messages');
                 messagesDiv.innerHTML = '';
+
+                // Display detected/selected format
+                if (validation.format) {
+                    const formatBadge = document.createElement('div');
+                    formatBadge.className = 'validation-message info';
+                    const formatIcon = validation.format === 'cloze' ? '📝' : '🔄';
+                    const formatName = validation.format === 'cloze' ? 'Cloze (Fill-in-the-Blank)' : 'Reverse (Question → Answer)';
+                    formatBadge.innerHTML = `<strong>${formatIcon} Detected Format:</strong> ${formatName}`;
+                    messagesDiv.appendChild(formatBadge);
+                }
 
                 if (validation.errors.length > 0) {
                     const errorTitle = document.createElement('div');
@@ -5033,6 +5336,7 @@
                         name: category,  // Display name
                         category: category,  // Category for filtering
                         description: `Flashcards for ${category}`,
+                        format: this.uploadedCSVValidation.format || 'cloze',  // Card format (cloze or reverse)
                         cards: this.uploadedCSVValidation.data,  // Array of validated cards
                         uploadedBy: session.username  // Track which admin uploaded
                     };
