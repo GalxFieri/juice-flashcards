@@ -5320,9 +5320,16 @@
                     return;
                 }
 
-                // Get the friendly name from the selected option's data attribute
+                // Get the friendly name from the selected option's data attribute or text content
                 const selectedOption = categorySelect.options[categorySelect.selectedIndex];
-                const categoryName = selectedOption.dataset.friendlyName || selectedOption.textContent;
+                const categoryName = (selectedOption.dataset.friendlyName || selectedOption.textContent || '').trim();
+
+                if (!categoryName) {
+                    alert('Please select a valid category');
+                    return;
+                }
+
+                console.log('Selected category:', categoryName, 'ID:', categoryId);
 
                 const statusDiv = document.getElementById('upload-status');
                 statusDiv.textContent = 'Uploading cards to Firestore...';
@@ -5352,7 +5359,7 @@
                     const result = await window.JuiceAuth.saveCardSet(setId, setData);
 
                     // Also save to localStorage as a backup
-                    const cardSetKey = `juice_cards_${category}`;
+                    const cardSetKey = `juice_cards_${categoryName}`;
                     localStorage.setItem(cardSetKey, JSON.stringify(this.uploadedCSVValidation.data));
 
                     statusDiv.textContent = `✅ ${result.message}`;
