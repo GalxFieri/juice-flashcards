@@ -441,16 +441,13 @@ const AnswerValidation = (function() {
                 return { matched: true, shared: sharedCategories };
             }
         } else if (matchLevel === 'secondary') {
-            // Secondary level: primary AND secondary must match
+            // Secondary level: primary AND secondary must BOTH match
             if (userCategories.primary === expectedCategories.primary &&
-                userCategories.primary) {
+                userCategories.primary &&
+                userCategories.secondary === expectedCategories.secondary &&
+                userCategories.secondary) {
                 sharedCategories.push(userCategories.primary);
-
-                if (userCategories.secondary === expectedCategories.secondary &&
-                    userCategories.secondary) {
-                    sharedCategories.push(userCategories.secondary);
-                }
-
+                sharedCategories.push(userCategories.secondary);
                 return { matched: true, shared: sharedCategories };
             }
         } else if (matchLevel === 'tertiary') {
