@@ -2545,6 +2545,8 @@
                 this.cards = [];
                 this.currentCardIndex = 0;
                 this.sessionStartTime = null;
+                this.productDatabase = [];  // Product category database for hierarchical matching
+                this.currentQuestionShown = null;  // Current question being displayed
 
                 this.initElements();
                 this.attachEventListeners();
@@ -3845,6 +3847,15 @@
                     return;
                 }
 
+                // Load product category database for hierarchical category matching
+                if (this.currentCardSet && this.currentCardSet.format === 'reverse') {
+                    console.log('Loading product category database for reverse cards...');
+                    if (typeof CSVValidator !== 'undefined' && CSVValidator.loadProductCategoryDatabase) {
+                        this.productDatabase = await CSVValidator.loadProductCategoryDatabase();
+                        console.log(`Product database loaded: ${this.productDatabase.length} products`);
+                    }
+                }
+
                 // Load card difficulties from cloud
                 await this.loadCardDifficulties();
 
@@ -3934,6 +3945,9 @@
 
                 // Store answer for validation
                 this.currentCardAnswer = card.answer;
+
+                // Store the current question being asked for category matching
+                this.currentQuestionShown = question;
             }
 
             renderClozeText(text, element, isFront) {
@@ -3993,11 +4007,29 @@
 
                 // Try to use imported validation function from AnswerValidation module
                 if (typeof AnswerValidation !== 'undefined' && AnswerValidation.compare && typeof AnswerValidation.compare === 'function') {
-                    const result = AnswerValidation.compare(userAnswer, this.currentCardAnswer);
+                    let result;
+
+                    // For reverse cards, use hierarchical category matching if product database is available
+                    if (this.currentCardSet && this.currentCardSet.format === 'reverse' &&
+                        typeof AnswerValidation.compareWithHierarchicalCategory === 'function' &&
+                        this.productDatabase && this.productDatabase.length > 0) {
+
+                        result = AnswerValidation.compareWithHierarchicalCategory(
+                            userAnswer,
+                            this.currentCardAnswer,
+                            this.currentQuestionShown || '',
+                            this.productDatabase
+                        );
+
+                        console.log(`Category matching result: matchType=${result.matchType}, status=${result.status}, award=${result.award}`);
+                    } else {
+                        // Fall back to standard comparison for cloze format or when no category database
+                        result = AnswerValidation.compare(userAnswer, this.currentCardAnswer);
+                    }
 
                     // Convert AnswerValidation response format to our feedback format
                     let cssClass = 'feedback-incorrect';
-                    if (result.status === 'perfect') {
+                    if (result.status === 'perfect' || result.status === 'category_match') {
                         cssClass = 'feedback-correct';
                     } else if (result.status === 'close' || result.status === 'close_spelling') {
                         cssClass = 'feedback-close';
@@ -4011,7 +4043,8 @@
                         status: result.status,
                         cssClass: cssClass,
                         message: result.feedback,
-                        award: result.award
+                        award: result.award,
+                        matchType: result.matchType || 'exact'
                     };
                 } else {
                     // Fallback simple validation
@@ -4023,14 +4056,16 @@
                             status: 'perfect',
                             cssClass: 'feedback-correct',
                             message: '✓ Perfect! Exact match.',
-                            award: 100
+                            award: 100,
+                            matchType: 'exact'
                         };
                     } else {
                         feedbackResult = {
                             status: 'incorrect',
                             cssClass: 'feedback-incorrect',
                             message: '✗ Not quite. Try again!',
-                            award: 0
+                            award: 0,
+                            matchType: 'none'
                         };
                     }
                 }
@@ -4058,8 +4093,11 @@
                 }
 
                 const feedbackClass = this.lastFeedback.cssClass;
+                const matchType = this.lastFeedback.matchType || 'none';
 
+                // For both exact matches AND category matches, treat them as fully correct
                 if (feedbackClass.includes('feedback-correct')) {
+                    // Both 'perfect' status and 'category_match' status get full 100 XP
                     xpGained = 100;
                 } else if (feedbackClass.includes('feedback-close')) {
                     xpGained = 75;
@@ -4071,7 +4109,7 @@
                     xpGained = -10;
                 }
 
-                // Apply rating bonus
+                // Apply rating multipliers (same for exact and category matches)
                 if (rating === 'good') xpGained = Math.floor(xpGained * 1.25);
                 if (rating === 'easy') xpGained = Math.floor(xpGained * 1.5);
 
@@ -4079,9 +4117,12 @@
                 this.currentProfile.currentLevel = Math.floor(this.currentProfile.xp / 100) + 1;
                 this.currentProfile.totalCards++;
 
+                // Mark both exact matches and category matches as correct for stats
                 if (feedbackClass.includes('feedback-correct') || feedbackClass.includes('feedback-close')) {
                     this.currentProfile.correctCards++;
                 }
+
+                console.log(`XP Calculation: matchType=${matchType}, feedback=${feedbackClass}, baseXP=${this.lastFeedback.award}, rating=${rating}, finalXP=${xpGained}`);
 
                 // Save card difficulty rating (to Firestore or queue if offline)
                 try {

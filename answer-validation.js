@@ -331,6 +331,273 @@ const AnswerValidation = (function() {
     }
 
     // ====================================================
+    // HIERARCHICAL CATEGORY MATCHING (for Reverse Cards)
+    // ====================================================
+
+    /**
+     * Detect the matching level required based on question specificity
+     * Analyzes question keywords to determine which category hierarchy level to use
+     *
+     * @param {string} question - The question text to analyze
+     * @returns {string} - 'primary', 'secondary', or 'tertiary'
+     */
+    function detectMatchingLevel(question) {
+        if (!question) return 'primary';
+
+        const questionLower = question.toLowerCase();
+
+        // Tertiary level keywords (most specific)
+        const tertiaryKeywords = [
+            'cereal', 'chocolate', 'bakery', 'pastry', 'citrus', 'melon',
+            'menthol', 'candy', 'confection', 'caramel', 'vanilla', 'cream',
+            'butter', 'donut', 'cake', 'custard', 'milk', 'cherry', 'peach',
+            'herb', 'herbal', 'tobacco'
+        ];
+
+        // Secondary level keywords (medium specificity)
+        const secondaryKeywords = [
+            'creamy', 'fruity', 'sweet', 'tart', 'sour', 'minty', 'bold',
+            'berry', 'fruit', 'tropical', 'dessert'
+        ];
+
+        // Quaternary level keywords (most specific qualitative descriptors)
+        const quaternaryKeywords = [
+            'warm', 'cool', 'smooth', 'crisp', 'pure', 'exotic', 'herbal',
+            'simple', 'clean', 'classic', 'rich'
+        ];
+
+        // Count keyword matches
+        let tertiaryCount = 0;
+        for (const keyword of tertiaryKeywords) {
+            if (questionLower.includes(keyword)) tertiaryCount++;
+        }
+
+        let secondaryCount = 0;
+        for (const keyword of secondaryKeywords) {
+            if (questionLower.includes(keyword)) secondaryCount++;
+        }
+
+        // Determine matching level based on keyword counts
+        if (tertiaryCount >= 2) {
+            return 'tertiary';
+        } else if (tertiaryCount === 1 || secondaryCount >= 2) {
+            return 'secondary';
+        } else {
+            return 'primary';
+        }
+    }
+
+    /**
+     * Get product categories from the product database
+     * Returns null if product not found
+     *
+     * @param {string} productName - Name of the product to look up
+     * @param {array} productDatabase - Array of product category objects
+     * @returns {object|null} - { primary, secondary, tertiary, quaternary } or null
+     */
+    function getProductCategories(productName, productDatabase) {
+        if (!productDatabase || !Array.isArray(productDatabase)) {
+            return null;
+        }
+
+        const productNorm = productName.trim().toLowerCase();
+
+        for (const product of productDatabase) {
+            if (product['Product Name'] &&
+                product['Product Name'].trim().toLowerCase() === productNorm) {
+                return {
+                    primary: product['Primary Category'] || null,
+                    secondary: product['Secondary Category'] || null,
+                    tertiary: product['Tertiary Category'] || null,
+                    quaternary: product['Quaternary Category'] || null
+                };
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Check if two products share categories at the specified matching level
+     * Returns whether they match at that level and which categories are shared
+     *
+     * @param {object} userCategories - Categories of user's answer product
+     * @param {object} expectedCategories - Categories of expected answer product
+     * @param {string} matchLevel - 'primary', 'secondary', or 'tertiary'
+     * @returns {object} - { matched: boolean, shared: [array of category names] }
+     */
+    function checkCategoryMatch(userCategories, expectedCategories, matchLevel) {
+        if (!userCategories || !expectedCategories) {
+            return { matched: false, shared: [] };
+        }
+
+        const sharedCategories = [];
+
+        if (matchLevel === 'primary') {
+            // Primary level: only primary category must match
+            if (userCategories.primary === expectedCategories.primary &&
+                userCategories.primary) {
+                sharedCategories.push(userCategories.primary);
+                return { matched: true, shared: sharedCategories };
+            }
+        } else if (matchLevel === 'secondary') {
+            // Secondary level: primary AND secondary must match
+            if (userCategories.primary === expectedCategories.primary &&
+                userCategories.primary) {
+                sharedCategories.push(userCategories.primary);
+
+                if (userCategories.secondary === expectedCategories.secondary &&
+                    userCategories.secondary) {
+                    sharedCategories.push(userCategories.secondary);
+                }
+
+                return { matched: true, shared: sharedCategories };
+            }
+        } else if (matchLevel === 'tertiary') {
+            // Tertiary level: primary AND secondary must match
+            // (Tertiary is considered but not required for match)
+            if (userCategories.primary === expectedCategories.primary &&
+                userCategories.primary &&
+                userCategories.secondary === expectedCategories.secondary &&
+                userCategories.secondary) {
+
+                sharedCategories.push(userCategories.primary);
+                sharedCategories.push(userCategories.secondary);
+
+                if (userCategories.tertiary === expectedCategories.tertiary &&
+                    userCategories.tertiary) {
+                    sharedCategories.push(userCategories.tertiary);
+                }
+
+                return { matched: true, shared: sharedCategories };
+            }
+        }
+
+        return { matched: false, shared: [] };
+    }
+
+    /**
+     * Create a "no match" result object with proper feedback
+     *
+     * @param {string} expectedAnswer - The correct answer
+     * @returns {object} - Standard result object
+     */
+    function createNoMatchResult(expectedAnswer) {
+        return {
+            status: 'incorrect',
+            similarity: 0,
+            feedback: `✗ Incorrect. The answer is ${expectedAnswer}`,
+            award: 0,
+            matchType: 'none',
+            xpMultiplier: 1.0
+        };
+    }
+
+    /**
+     * Compare answers using hierarchical category matching
+     * This is the main function for reverse card validation
+     *
+     * @param {string} userAnswer - User's typed answer
+     * @param {string} expectedAnswer - Expected/correct answer
+     * @param {string} question - The question being asked
+     * @param {array} productDatabase - Pre-loaded product categories array
+     * @param {object} options - Optional configuration
+     * @returns {object} - Detailed comparison result with category matching
+     */
+    function compareAnswersWithHierarchicalCategory(userAnswer, expectedAnswer, question, productDatabase, options = {}) {
+        const {
+            perfectThreshold = 1.0,
+            closeThreshold = 0.85,
+            acceptThreshold = 0.80,
+            strictFlavors = true,
+            logDetails = false
+        } = options;
+
+        // Empty answer check
+        if (!userAnswer || !userAnswer.trim()) {
+            return {
+                status: 'empty',
+                similarity: 0,
+                feedback: '❌ No answer provided',
+                award: 0,
+                matchType: 'none',
+                xpMultiplier: 1.0
+            };
+        }
+
+        // TIER 1: Try exact match first (always preferred)
+        const exactResult = compareAnswers(userAnswer, expectedAnswer, options);
+
+        if (exactResult.status !== 'incorrect' && exactResult.status !== 'forbidden' &&
+            exactResult.status !== 'empty') {
+            // Exact match found (perfect, close, or acceptable)
+            return {
+                ...exactResult,
+                matchType: 'exact',
+                xpMultiplier: 1.0
+            };
+        }
+
+        // If no product database, fall back to exact matching only
+        if (!productDatabase) {
+            return {
+                ...exactResult,
+                matchType: 'none',
+                xpMultiplier: 1.0
+            };
+        }
+
+        // TIER 2: Category-based matching (only if exact match failed)
+
+        // Detect question specificity level
+        const matchLevel = detectMatchingLevel(question);
+        if (logDetails) {
+            console.log(`Category Matching - Detected level: ${matchLevel}`);
+        }
+
+        // Get categories for both answers
+        const userAnswerCategories = getProductCategories(userAnswer, productDatabase);
+        const expectedAnswerCategories = getProductCategories(expectedAnswer, productDatabase);
+
+        if (!userAnswerCategories || !expectedAnswerCategories) {
+            // One or both answers not in database, fall back to exact matching result
+            return createNoMatchResult(expectedAnswer);
+        }
+
+        // Check for category match at the detected level
+        const categoryMatch = checkCategoryMatch(
+            userAnswerCategories,
+            expectedAnswerCategories,
+            matchLevel
+        );
+
+        if (categoryMatch.matched) {
+            if (logDetails) {
+                console.log(`Category Match Found! Shared categories: ${categoryMatch.shared.join(', ')}`);
+            }
+
+            // Category match is as good as exact match - full credit
+            return {
+                status: 'category_match',
+                similarity: 1.0,
+                feedback: `✓ Correct! ${userAnswer}`,
+                award: 100,  // Full XP base
+                matchType: 'category',
+                xpMultiplier: 1.0,  // Full multipliers apply (×1.25, ×1.5)
+                matchedLevel: matchLevel,
+                sharedCategories: categoryMatch.shared
+            };
+        }
+
+        // TIER 3: No match
+        if (logDetails) {
+            console.log(`No category match. User: ${JSON.stringify(userAnswerCategories)}, Expected: ${JSON.stringify(expectedAnswerCategories)}`);
+        }
+
+        return createNoMatchResult(expectedAnswer);
+    }
+
+    // ====================================================
     // DETAILED FEEDBACK MESSAGES
     // ====================================================
 
@@ -398,6 +665,17 @@ const AnswerValidation = (function() {
          * @returns {object} - Detailed comparison result
          */
         compare: compareAnswers,
+
+        /**
+         * Hierarchical category matching for reverse cards
+         * @param {string} userAnswer - User's answer
+         * @param {string} expectedAnswer - Expected answer
+         * @param {string} question - The question being asked
+         * @param {array} productDatabase - Product categories database
+         * @param {object} options - Optional configuration
+         * @returns {object} - Detailed comparison result with category matching
+         */
+        compareWithHierarchicalCategory: compareAnswersWithHierarchicalCategory,
 
         /**
          * Get HTML feedback
